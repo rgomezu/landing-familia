@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Raíces &amp; Brújula CR | Consejería Familiar, Salud y Neurodesarrollo</title>
+  <meta name="description" content="Servicio integral de consejería familiar, salud y neurodesarrollo en Costa Rica. Liderado por un equipo multidisciplinario: Medicina, Educación Preescolar e Ingeniería en Sistemas." />
+
+  <!-- Google Fonts: Lora & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            offwhite: '#FAF8F5',
+            cream: '#F3EFEA',
+            sage: {
+              DEFAULT: '#4A6B5D',
+              dark: '#395448',
+              light: '#EBF0ED',
+            },
+            slate: {
+              soft: '#5B768A',
+              light: '#EDF2F6',
+              dark: '#435A6B',
+            },
+            terracotta: {
+              DEFAULT: '#C86D51',
+              dark: '#B05A40',
+              light: '#FBF0EC',
+            },
+            ink: '#24302C',
+            muted: '#5A6661',
+          },
+          fontFamily: {
+            serif: ['"Lora"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+          },
+          boxShadow: {
+            soft: '0 10px 35px -10px rgba(36, 48, 44, 0.08)',
+            card: '0 4px 24px -4px rgba(74, 107, 93, 0.08)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    .accordion-content {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.3s ease-out;
+    }
+    .accordion-item.is-open .accordion-content {
+      grid-template-rows: 1fr;
+    }
+    .accordion-inner {
+      overflow: hidden;
+    }
+    .accordion-icon {
+      transition: transform 0.25s ease;
+    }
+    .accordion-item.is-open .accordion-icon {
+      transform: rotate(180deg);
+    }
+  </style>
+</head>
+<body class="bg-offwhite text-ink font-sans antialiased selection:bg-sage/20 selection:text-sage-dark">
+
+  <!-- ==================== NAVBAR ==================== -->
+  <header class="sticky top-0 z-40 bg-offwhite/90 backdrop-blur-md border-b border-sage/10">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3" aria-label="Navegación Principal">
+      <!-- Textual Logo -->
+      <a href="#" class="flex items-center gap-2.5 group focus:outline-none shrink-0">
+        <span class="w-9 h-9 rounded-xl bg-sage text-white flex items-center justify-center shadow-sm group-hover:bg-sage-dark transition-colors">
+          <i data-lucide="compass" class="w-5 h-5"></i>
+        </span>
+        <div class="leading-tight">
+          <span class="font-serif font-semibold text-lg sm:text-xl tracking-tight text-ink block">Raíces &amp; Brújula</span>
+          <span data-i18n="brand_sub" class="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-sage font-semibold block">Asesoría Familiar · Costa Rica</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <div class="hidden lg:flex items-center gap-7 text-sm font-medium text-muted">
+        <a href="#pillars" data-i18n="nav_approach" class="hover:text-sage transition-colors">Nuestro Enfoque</a>
+        <a href="#packages" data-i18n="nav_packages" class="hover:text-sage transition-colors">Paquetes</a>
+        <a href="#team" data-i18n="nav_team" class="hover:text-sage transition-colors">Nuestro Equipo</a>
+        <a href="#faq" data-i18n="nav_faq" class="hover:text-sage transition-colors">Preguntas Frecuentes</a>
+      </div>
+
+      <!-- Language Switcher + Desktop CTA + Mobile Toggle -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <!-- ES / EN Toggle -->
+        <div class="inline-flex items-center bg-cream p-1 rounded-full border border-sage/15" role="group" aria-label="Cambiar idioma / Switch language">
+          <button type="button" id="btn-lang-es" onclick="setLanguage('es')" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-sage text-white shadow-sm">
+            ES
+          </button>
+          <button type="button" id="btn-lang-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all text-muted hover:text-ink">
+            EN
+          </button>
+        </div>
+
+        <button type="button" onclick="openBookingModal()" class="hidden sm:inline-flex items-center gap-2 bg-sage hover:bg-sage-dark text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-sm hover:shadow transition-all">
+          <i data-lucide="calendar-heart" class="w-4 h-4"></i>
+          <span data-i18n="nav_cta">Agendar Orientación</span>
+        </button>
+
+        <button id="mobile-menu-btn" type="button" class="lg:hidden p-2 rounded-lg text-ink hover:bg-cream transition-colors" aria-label="Abrir menú" aria-expanded="false">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-offwhite border-b border-sage/10 px-4 pt-2 pb-6 space-y-3">
+      <a href="#pillars" data-i18n="nav_approach" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Nuestro Enfoque</a>
+      <a href="#packages" data-i18n="nav_packages" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Paquetes</a>
+      <a href="#team" data-i18n="nav_team" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Nuestro Equipo</a>
+      <a href="#faq" data-i18n="nav_faq" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Preguntas Frecuentes</a>
+      <button type="button" onclick="openBookingModal(); toggleMobileMenu(false);" class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-sage hover:bg-sage-dark text-white text-sm font-semibold px-5 py-3 rounded-full shadow-sm">
+        <i data-lucide="calendar-heart" class="w-4 h-4"></i>
+        <span data-i18n="nav_cta">Agendar Orientación</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
+      <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-sage-light/70 blur-3xl -z-10"></div>
+      <div class="absolute bottom-0 -left-24 w-80 h-80 rounded-full bg-terracotta-light/80 blur-3xl -z-10"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          <!-- Left Copy -->
+          <div class="lg:col-span-7 space-y-7">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sage/15 shadow-sm text-xs font-semibold text-sage">
+              <span class="w-2 h-2 rounded-full bg-terracotta"></span>
+              <span data-i18n="hero_badge">Presencial en la GAM y Virtual en todo Costa Rica</span>
+            </div>
+
+            <h1 data-i18n-html="hero_title" class="font-serif text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold text-ink leading-[1.15] tracking-tight">
+              Tranquilidad para su familia, desde la <span class="text-sage italic font-medium">primera toma</span> hasta la <span class="text-slate-soft">adolescencia</span>.
+            </h1>
+
+            <p data-i18n="hero_subtitle" class="text-lg sm:text-xl text-muted leading-relaxed max-w-2xl">
+              Consejería familiar integral, salud y neurodesarrollo en Costa Rica—uniendo medicina clínica, pedagogía infantil y hábitos tecnológicos saludables bajo un mismo equipo de confianza.
+            </p>
+
+            <!-- Hero CTAs -->
+            <div class="flex flex-col sm:flex-row gap-4 pt-1">
+              <a data-wa-key="wa_hero" href="https://wa.me/50688880000?text=%C2%A1Hola%20Ra%C3%ADces%20%26%20Br%C3%BAjula!%20Quisiera%20agendar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n%20familiar." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2.5 bg-sage hover:bg-sage-dark text-white font-semibold px-7 py-4 rounded-full shadow-soft hover:shadow-md transition-all">
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                <span data-i18n="hero_cta_wa">Agendar por WhatsApp</span>
+              </a>
+              <a href="#packages" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-cream text-ink border border-sage/20 font-semibold px-7 py-4 rounded-full transition-all">
+                <span data-i18n="hero_cta_pkg">Ver Paquetes</span>
+                <i data-lucide="arrow-down" class="w-4 h-4 text-terracotta"></i>
+              </a>
+            </div>
+
+            <!-- Trust Bar -->
+            <div class="pt-4 border-t border-sage/10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-muted">
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="shield-check" class="w-5 h-5 text-sage shrink-0"></i>
+                <span data-i18n="trust_privacy">Privacidad Ley N.º 8968</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="users" class="w-5 h-5 text-terracotta shrink-0"></i>
+                <span data-i18n="trust_parents">Padres de 4 hijos (7–21 años)</span>
+              </div>
+              <div class="flex items-center gap-2.5">
+                <i data-lucide="graduation-cap" class="w-5 h-5 text-slate-soft shrink-0"></i>
+                <span data-i18n="trust_schools">Experiencia en colegios de CR</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Visual Card Composition -->
+          <div class="lg:col-span-5">
+            <div class="relative bg-white rounded-3xl p-6 sm:p-8 shadow-soft border border-sage/10">
+              <div class="flex items-center justify-between pb-5 border-b border-cream">
+                <div>
+                  <p data-i18n="hero_card_kicker" class="text-xs uppercase tracking-wider font-semibold text-terracotta">Acompañamiento Integral 360°</p>
+                  <h2 data-i18n="hero_card_title" class="font-serif text-xl font-semibold text-ink mt-0.5">Una Familia, Tres Miradas</h2>
+                </div>
+                <span class="w-11 h-11 rounded-2xl bg-sage-light text-sage flex items-center justify-center">
+                  <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                </span>
+              </div>
+
+              <div class="space-y-4 my-6">
+                <div class="flex items-start gap-4 p-4 rounded-2xl bg-sage-light/55 border border-sage/10">
+                  <div class="w-10 h-10 rounded-xl bg-sage text-white flex items-center justify-center shrink-0">
+                    <i data-lucide="stethoscope" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h3 data-i18n="lens1_title" class="font-semibold text-ink text-sm">Mirada Clínica y de Lactancia</h3>
+                    <p data-i18n="lens1_desc" class="text-xs text-muted mt-1 leading-relaxed">Salud preventiva basada en evidencia, alimentación infantil y tamizaje del neurodesarrollo.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-4 rounded-2xl bg-terracotta-light/70 border border-terracotta/15">
+                  <div class="w-10 h-10 rounded-xl bg-terracotta text-white flex items-center justify-center shrink-0">
+                    <i data-lucide="blocks" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h3 data-i18n="lens2_title" class="font-semibold text-ink text-sm">Mirada Pedagógica y Escolar CR</h3>
+                    <p data-i18n="lens2_desc" class="text-xs text-muted mt-1 leading-relaxed">Hitos tempranos y guía serena en procesos de admisión a colegios privados en Costa Rica.</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start gap-4 p-4 rounded-2xl bg-slate-light/75 border border-slate-soft/15">
+                  <div class="w-10 h-10 rounded-xl bg-slate-soft text-white flex items-center justify-center shrink-0">
+                    <i data-lucide="laptop-minimal-check" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h3 data-i18n="lens3_title" class="font-semibold text-ink text-sm">Mirada Digital y de Seguridad</h3>
+                    <p data-i18n="lens3_desc" class="text-xs text-muted mt-1 leading-relaxed">Límites prácticos, protección de la red del hogar y acuerdos saludables frente a las pantallas.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bg-cream/80 rounded-2xl p-4 flex items-center justify-between gap-4">
+                <p data-i18n-html="bilingual_note" class="text-xs text-muted leading-snug">
+                  <strong class="text-ink">Atención Bilingüe:</strong> Consultas disponibles en español e inglés para familias locales y expatriadas.
+                </p>
+                <span class="text-xs font-bold text-sage whitespace-nowrap bg-white px-3 py-1.5 rounded-full border border-sage/15">ES / EN</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== VALUE PROPOSITION (3 PILLARS) ==================== -->
+    <section id="pillars" class="py-20 bg-white border-y border-sage/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center mb-14">
+          <span data-i18n="pillars_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-terracotta">Nuestra Propuesta de Valor</span>
+          <h2 data-i18n="pillars_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">Tres disciplinas trabajando juntas por su hijo o hija</h2>
+          <p data-i18n="pillars_subtitle" class="text-muted mt-4 leading-relaxed">
+            Los retos de la crianza rara vez pertenecen a una sola área. Integramos criterio médico, etapa educativa y vida digital en planes claros y tranquilos.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Pillar 1 -->
+          <article class="group bg-offwhite rounded-3xl p-8 border border-sage/10 hover:border-sage/30 shadow-card transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-sage-light text-sage flex items-center justify-center mb-6 group-hover:bg-sage group-hover:text-white transition-colors">
+              <i data-lucide="baby" class="w-7 h-7"></i>
+            </div>
+            <span data-i18n="p1_role" class="text-xs font-semibold uppercase tracking-wider text-sage">Medicina</span>
+            <h3 data-i18n="p1_title" class="font-serif text-2xl font-semibold text-ink mt-1.5 mb-3">Salud y Lactancia Materna</h3>
+            <p data-i18n="p1_desc" class="text-muted text-sm leading-relaxed mb-5">
+              Orientación clínica cercana y basada en evidencia para recién nacidos, niños y adolescentes—ayudando a distinguir señales reales de alerta frente a procesos normales.
+            </p>
+            <ul class="space-y-2.5 text-sm text-ink/90">
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-sage mt-1 shrink-0"></i>
+                <span data-i18n="p1_b1">Valoración de agarre, producción y lactancia sin dolor</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-sage mt-1 shrink-0"></i>
+                <span data-i18n="p1_b2">Crecimiento preventivo, higiene del sueño y alimentación</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-sage mt-1 shrink-0"></i>
+                <span data-i18n="p1_b3">Seguimiento temprano de hitos del neurodesarrollo</span>
+              </li>
+            </ul>
+          </article>
+
+          <!-- Pillar 2 -->
+          <article class="group bg-offwhite rounded-3xl p-8 border border-terracotta/15 hover:border-terracotta/40 shadow-card transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-terracotta-light text-terracotta flex items-center justify-center mb-6 group-hover:bg-terracotta group-hover:text-white transition-colors">
+              <i data-lucide="book-open-check" class="w-7 h-7"></i>
+            </div>
+            <span data-i18n="p2_role" class="text-xs font-semibold uppercase tracking-wider text-terracotta">Educación Preescolar</span>
+            <h3 data-i18n="p2_title" class="font-serif text-2xl font-semibold text-ink mt-1.5 mb-3">Desarrollo y Guía Escolar CR</h3>
+            <p data-i18n="p2_desc" class="text-muted text-sm leading-relaxed mb-5">
+              Experiencia pedagógica unida a nuestra vivencia real como padres en colegios privados de Costa Rica, para encontrar el entorno que mejor se adapta a su hijo.
+            </p>
+            <ul class="space-y-2.5 text-sm text-ink/90">
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-terracotta mt-1 shrink-0"></i>
+                <span data-i18n="p2_b1">Estimulación mediante juego, lenguaje y madurez emocional</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-terracotta mt-1 shrink-0"></i>
+                <span data-i18n="p2_b2">Comparativa de currículos MEP, IB y calendario internacional</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-terracotta mt-1 shrink-0"></i>
+                <span data-i18n="p2_b3">Preparación para entrevistas de admisión y adaptación suave</span>
+              </li>
+            </ul>
+          </article>
+
+          <!-- Pillar 3 -->
+          <article class="group bg-offwhite rounded-3xl p-8 border border-slate-soft/15 hover:border-slate-soft/40 shadow-card transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-slate-light text-slate-soft flex items-center justify-center mb-6 group-hover:bg-slate-soft group-hover:text-white transition-colors">
+              <i data-lucide="shield-alert" class="w-7 h-7"></i>
+            </div>
+            <span data-i18n="p3_role" class="text-xs font-semibold uppercase tracking-wider text-slate-soft">Ingeniería en Sistemas</span>
+            <h3 data-i18n="p3_title" class="font-serif text-2xl font-semibold text-ink mt-1.5 mb-3">Tecnología y Hábitos Digitales</h3>
+            <p data-i18n="p3_desc" class="text-muted text-sm leading-relaxed mb-5">
+              Acompañamos a las familias con soluciones técnicas reales—sin alarmismo—para proteger la atención, el descanso nocturno y la seguridad en línea.
+            </p>
+            <ul class="space-y-2.5 text-sm text-ink/90">
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-slate-soft mt-1 shrink-0"></i>
+                <span data-i18n="p3_b1">Filtrado desde el router y controles parentales según edad</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-slate-soft mt-1 shrink-0"></i>
+                <span data-i18n="p3_b2">Acuerdos familiares para videojuegos, pantallas y primer celular</span>
+              </li>
+              <li class="flex items-start gap-2.5">
+                <i data-lucide="check" class="w-4 h-4 text-slate-soft mt-1 shrink-0"></i>
+                <span data-i18n="p3_b3">Ciudadanía digital, privacidad y prevención del ciberacoso</span>
+              </li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== SERVICE PACKAGES ==================== -->
+    <section id="packages" class="py-20 bg-offwhite">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center mb-14">
+          <span data-i18n="pkg_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-sage">Programas a la Medida</span>
+          <h2 data-i18n="pkg_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">Paquetes por Etapa</h2>
+          <p data-i18n="pkg_subtitle" class="text-muted mt-4 leading-relaxed">
+            Acompañamiento focalizado y transparente en las tres transiciones más importantes de la infancia y la adolescencia.
+          </p>
+        </div>
+
+        <div class="grid lg:grid-cols-3 gap-8 items-stretch">
+          <!-- Package 1: First 100 Days -->
+          <div class="bg-white rounded-3xl p-8 border border-sage/15 shadow-card flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span data-i18n="pkg1_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-sage-light text-sage">0–6 Meses</span>
+                <span data-i18n="pkg1_tag" class="text-xs font-medium text-muted">Enfoque Médico y Vínculo</span>
+              </div>
+              <h3 data-i18n="pkg1_title" class="font-serif text-2xl font-semibold text-ink">Primeros 100 Días (0-6 meses)</h3>
+              <p data-i18n="pkg1_desc" class="text-sm text-muted mt-2 leading-relaxed">
+                Respaldo clínico y emocional continuo para futuros padres o recién llegados a casa con su bebé, guiando lactancia, descanso y señales tempranas.
+              </p>
+
+              <div class="my-6 py-4 border-y border-cream flex items-baseline gap-2">
+                <span class="font-serif text-3xl font-bold text-ink">$145</span>
+                <span data-i18n="pkg1_price_sub" class="text-xs text-muted">/ 2 sesiones + seguimiento WhatsApp por 14 días</span>
+              </div>
+
+              <ul class="space-y-3 text-sm text-ink/90 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-sage mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg1_b1">Valoración de 60 min en lactancia y salud neonatal (GAM o virtual)</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-sage mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg1_b2">Guía personalizada de tomas, ganancia de peso y sueño seguro</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-sage mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg1_b3">Lista de chequeo de neurodesarrollo sensorial y motor temprano</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-sage mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg1_b4">Sesión de control y resolución directa de dudas clínicas</span>
+                </li>
+              </ul>
+            </div>
+
+            <a data-wa-key="wa_pkg1" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Me%20interesa%20agendar%20el%20paquete%20Primeros%20100%20D%C3%ADas%20(0-6%20meses)." target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-sage-light hover:bg-sage text-sage-dark hover:text-white font-semibold py-3.5 px-6 rounded-full transition-colors">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span data-i18n="pkg1_cta">Agendar Primeros 100 Días</span>
+            </a>
+          </div>
+
+          <!-- Package 2: CR School Route (Featured) -->
+          <div class="relative bg-white rounded-3xl p-8 border-2 border-sage shadow-soft flex flex-col justify-between">
+            <span data-i18n="pkg2_badge" class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-terracotta text-white text-xs font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-sm">
+              Más Solicitado
+            </span>
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span data-i18n="pkg2_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-terracotta-light text-terracotta-dark">2–6 Años</span>
+                <span data-i18n="pkg2_tag" class="text-xs font-medium text-muted">Pedagógico y Clínico</span>
+              </div>
+              <h3 data-i18n="pkg2_title" class="font-serif text-2xl font-semibold text-ink">Ruta Escolar CR (2-6 años)</h3>
+              <p data-i18n="pkg2_desc" class="text-sm text-muted mt-2 leading-relaxed">
+                Orientación imparcial para evaluar la madurez del desarrollo y elegir el preescolar o escuela ideal en Costa Rica sin estrés ni desinformación.
+              </p>
+
+              <div class="my-6 py-4 border-y border-cream flex items-baseline gap-2">
+                <span class="font-serif text-3xl font-bold text-ink">$165</span>
+                <span data-i18n="pkg2_price_sub" class="text-xs text-muted">/ Evaluación integral + Mapa de Colegios</span>
+              </div>
+
+              <ul class="space-y-3 text-sm text-ink/90 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg2_b1">Perfil de apresto escolar y emocional (Medicina + Preescolar)</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg2_b2">Preselección de 3 a 5 colegios privados compatibles (GAM y bilingües)</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg2_b3">Fechas de admisión, rangos de inversión y preparación para entrevistas</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-terracotta mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg2_b4">Guía práctica para una transición serena y manejo de apego</span>
+                </li>
+              </ul>
+            </div>
+
+            <a data-wa-key="wa_pkg2" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Me%20interesa%20agendar%20el%20paquete%20Ruta%20Escolar%20CR%20(2-6%20a%C3%B1os)." target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-sage hover:bg-sage-dark text-white font-semibold py-3.5 px-6 rounded-full shadow-sm transition-colors">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span data-i18n="pkg2_cta">Agendar Ruta Escolar CR</span>
+            </a>
+          </div>
+
+          <!-- Package 3: Tech Compass & Habits -->
+          <div class="bg-white rounded-3xl p-8 border border-slate-soft/20 shadow-card flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span data-i18n="pkg3_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-light text-slate-dark">7–17 Años</span>
+                <span data-i18n="pkg3_tag" class="text-xs font-medium text-muted">Tecnología y Neurodesarrollo</span>
+              </div>
+              <h3 data-i18n="pkg3_title" class="font-serif text-2xl font-semibold text-ink">Brújula Digital y Hábitos (7-17 años)</h3>
+              <p data-i18n="pkg3_desc" class="text-sm text-muted mt-2 leading-relaxed">
+                Plan conjunto de Ingeniería y Medicina para transformar las peleas por pantallas en autonomía digital saludable, mejor descanso y seguridad real.
+              </p>
+
+              <div class="my-6 py-4 border-y border-cream flex items-baseline gap-2">
+                <span class="font-serif text-3xl font-bold text-ink">$155</span>
+                <span data-i18n="pkg3_price_sub" class="text-xs text-muted">/ Diagnóstico familiar + Configuración técnica en vivo</span>
+              </div>
+
+              <ul class="space-y-3 text-sm text-ink/90 mb-8">
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-soft mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg3_b1">Evaluación del impacto de pantallas en atención, ánimo y sueño</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-soft mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg3_b2">Configuración en vivo de filtros DNS, Family Link o Apple Screen Time</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-soft mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg3_b3">Acuerdo Digital Familiar personalizado según la edad de su hijo</span>
+                </li>
+                <li class="flex items-start gap-2.5">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-slate-soft mt-0.5 shrink-0"></i>
+                  <span data-i18n="pkg3_b4">Guía sobre redes sociales, videojuegos y uso responsable de IA</span>
+                </li>
+              </ul>
+            </div>
+
+            <a data-wa-key="wa_pkg3" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Me%20interesa%20agendar%20el%20paquete%20Br%C3%BAjula%20Digital%20y%20H%C3%A1bitos%20(7-17%20a%C3%B1os)." target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-slate-light hover:bg-slate-soft text-slate-dark hover:text-white font-semibold py-3.5 px-6 rounded-full transition-colors">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span data-i18n="pkg3_cta">Agendar Brújula Digital</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Custom Single Orientation Note -->
+        <div class="mt-10 bg-cream rounded-2xl p-6 sm:px-8 flex flex-col md:flex-row items-center justify-between gap-4 border border-sage/10">
+          <div class="flex items-center gap-4">
+            <div class="w-11 h-11 rounded-xl bg-white text-sage flex items-center justify-center shrink-0 shadow-sm">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 data-i18n="custom_title" class="font-semibold text-ink text-sm sm:text-base">¿No está seguro de cuál etapa se ajusta mejor a su familia hoy?</h4>
+              <p data-i18n="custom_desc" class="text-xs sm:text-sm text-muted">Inicie con una Orientación Exploratoria de 30 minutos o solicite un plan combinado para varios hijos.</p>
+            </div>
+          </div>
+          <button type="button" onclick="openBookingModal()" data-i18n="custom_cta" class="shrink-0 text-sm font-semibold text-sage hover:text-sage-dark underline underline-offset-4">
+            Solicitar Orientación Personalizada &rarr;
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== OUR TEAM ==================== -->
+    <section id="team" class="py-20 bg-white border-y border-sage/10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Team Intro Banner -->
+        <div class="grid lg:grid-cols-12 gap-8 items-end mb-14">
+          <div class="lg:col-span-7">
+            <span data-i18n="team_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-terracotta">Credenciales y Experiencia Real</span>
+            <h2 data-i18n-html="team_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">
+              Profesionales de formación. <span class="text-sage">Padres de cuatro</span> en la vida real.
+            </h2>
+          </div>
+          <div class="lg:col-span-5">
+            <div data-i18n-html="team_callout" class="bg-offwhite border border-sage/15 rounded-2xl p-5 text-sm text-muted leading-relaxed">
+              <strong class="text-ink">Respaldados por la experiencia familiar:</strong> Más allá de nuestros títulos, hemos criado a cuatro hijos—hoy de <strong class="text-ink">7, 12, 16 y 21 años</strong>—acompañándolos en primera persona por colegios privados de Costa Rica, la primera infancia y la adolescencia.
+            </div>
+          </div>
+        </div>
+
+        <!-- Team Member Cards -->
+        <div class="grid md:grid-cols-3 gap-8">
+          <!-- Member 1: Medical Doctor -->
+          <div class="bg-offwhite rounded-3xl overflow-hidden border border-sage/10 shadow-card flex flex-col">
+            <!-- Photo Placeholder -->
+            <div class="aspect-[4/3] bg-sage-light relative flex flex-col items-center justify-center text-sage/70 border-b border-sage/10 p-6 text-center">
+              <div class="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center mb-3 shadow-sm">
+                <i data-lucide="user-round" class="w-8 h-8 text-sage"></i>
+              </div>
+              <span data-i18n="t1_ph_title" class="text-xs font-semibold uppercase tracking-wider text-sage-dark">Espacio para Fotografía · Medicina</span>
+              <span data-i18n="t_ph_sub" class="text-[11px] text-muted mt-1">Recomendado: retrato cálido 800×600px</span>
+              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-sage shadow-sm">
+                Cod. MED-XXXXX (CR)
+              </span>
+            </div>
+            <div class="p-7 flex-1 flex flex-col">
+              <span data-i18n="t1_role" class="text-xs font-bold uppercase tracking-wider text-sage">Dirección Clínica y Lactancia</span>
+              <h3 data-i18n="t1_name" class="font-serif text-xl font-semibold text-ink mt-1">Dr./Dra. [Nombre Completo]</h3>
+              <p data-i18n="t1_bio" class="text-sm text-muted mt-3 leading-relaxed flex-1">
+                Médico y Cirujano incorporado al Colegio de Médicos y Cirujanos de Costa Rica, con formación especializada en medicina de lactancia, nutrición infantil y neurodesarrollo temprano.
+              </p>
+              <div class="mt-5 pt-4 border-t border-sage/10 flex flex-wrap gap-2">
+                <span data-i18n="t1_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sage/15 text-ink">Pediatría Preventiva</span>
+                <span data-i18n="t1_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sage/15 text-ink">Asesoría en Lactancia</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Member 2: Preschool Teacher -->
+          <div class="bg-offwhite rounded-3xl overflow-hidden border border-terracotta/15 shadow-card flex flex-col">
+            <!-- Photo Placeholder -->
+            <div class="aspect-[4/3] bg-terracotta-light relative flex flex-col items-center justify-center text-terracotta/80 border-b border-terracotta/10 p-6 text-center">
+              <div class="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center mb-3 shadow-sm">
+                <i data-lucide="user-round" class="w-8 h-8 text-terracotta"></i>
+              </div>
+              <span data-i18n="t2_ph_title" class="text-xs font-semibold uppercase tracking-wider text-terracotta-dark">Espacio para Fotografía · Preescolar</span>
+              <span data-i18n="t_ph_sub" class="text-[11px] text-muted mt-1">Recomendado: retrato cálido 800×600px</span>
+              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-terracotta-dark shadow-sm">
+                Lic. Educación Preescolar
+              </span>
+            </div>
+            <div class="p-7 flex-1 flex flex-col">
+              <span data-i18n="t2_role" class="text-xs font-bold uppercase tracking-wider text-terracotta">Primera Infancia y Guía Escolar</span>
+              <h3 data-i18n="t2_name" class="font-serif text-xl font-semibold text-ink mt-1">Lic. [Nombre Completo]</h3>
+              <p data-i18n="t2_bio" class="text-sm text-muted mt-3 leading-relaxed flex-1">
+                Docente de Educación Preescolar (COLYPRO) especializada en estimulación neurosensorial, regulación emocional y orientación para familias ante el ecosistema de colegios privados en Costa Rica.
+              </p>
+              <div class="mt-5 pt-4 border-t border-terracotta/15 flex flex-wrap gap-2">
+                <span data-i18n="t2_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-terracotta/15 text-ink">Hitos Tempranos</span>
+                <span data-i18n="t2_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-terracotta/15 text-ink">Admisión Escolar CR</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Member 3: Systems Engineer -->
+          <div class="bg-offwhite rounded-3xl overflow-hidden border border-slate-soft/15 shadow-card flex flex-col">
+            <!-- Photo Placeholder -->
+            <div class="aspect-[4/3] bg-slate-light relative flex flex-col items-center justify-center text-slate-soft border-b border-slate-soft/10 p-6 text-center">
+              <div class="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center mb-3 shadow-sm">
+                <i data-lucide="user-round" class="w-8 h-8 text-slate-soft"></i>
+              </div>
+              <span data-i18n="t3_ph_title" class="text-xs font-semibold uppercase tracking-wider text-slate-dark">Espacio para Fotografía · Ingeniería</span>
+              <span data-i18n="t_ph_sub" class="text-[11px] text-muted mt-1">Recomendado: retrato cálido 800×600px</span>
+              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-slate-dark shadow-sm">
+                Ing. en Sistemas (CPIC)
+              </span>
+            </div>
+            <div class="p-7 flex-1 flex flex-col">
+              <span data-i18n="t3_role" class="text-xs font-bold uppercase tracking-wider text-slate-soft">Hábitos Digitales y Seguridad</span>
+              <h3 data-i18n="t3_name" class="font-serif text-xl font-semibold text-ink mt-1">Ing. [Nombre Completo]</h3>
+              <p data-i18n="t3_bio" class="text-sm text-muted mt-3 leading-relaxed flex-1">
+                Ingeniero en Sistemas enfocado en ciberseguridad doméstica, ergonomía digital y en traducir los controles parentales técnicos en acuerdos familiares respetuosos para niños y adolescentes.
+              </p>
+              <div class="mt-5 pt-4 border-t border-slate-soft/15 flex flex-wrap gap-2">
+                <span data-i18n="t3_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-slate-soft/15 text-ink">Seguridad de Red</span>
+                <span data-i18n="t3_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-slate-soft/15 text-ink">Hábitos Tecnológicos</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FAQ (INTERACTIVE ACCORDION) ==================== -->
+    <section id="faq" class="py-20 bg-offwhite">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <span data-i18n="faq_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-sage">Claridad y Confianza</span>
+          <h2 data-i18n="faq_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">Preguntas Frecuentes</h2>
+          <p data-i18n="faq_subtitle" class="text-muted mt-3">Todo lo que necesita saber sobre nuestras modalidades, privacidad de datos y alcance preventivo en Costa Rica.</p>
+        </div>
+
+        <div class="space-y-4" id="faq-accordion">
+          <!-- FAQ 1: Modalities -->
+          <div class="accordion-item is-open bg-white rounded-2xl border border-sage/15 shadow-sm">
+            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="true">
+              <span data-i18n="faq1_q" class="font-serif font-semibold text-lg text-ink">¿Ofrecen sesiones tanto virtuales como presenciales en la GAM?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+                <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
+              </span>
+            </button>
+            <div class="accordion-content">
+              <div data-i18n-html="faq1_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+                Sí. Brindamos <strong>consultas presenciales a domicilio u oficina</strong> dentro del Gran Área Metropolitana (GAM)—incluyendo Escazú, Santa Ana, San José, Curridabat, Tres Ríos y Heredia—especialmente útiles para valoraciones de lactancia neonatal y configuración práctica del router en casa. Para familias fuera de la GAM, en zonas costeras o que prefieran comodidad remota, el 100% de nuestros paquetes está disponible por videollamada segura.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 2: Law 8968 -->
+          <div class="accordion-item bg-white rounded-2xl border border-sage/15 shadow-sm">
+            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faq2_q" class="font-serif font-semibold text-lg text-ink">¿Cómo protegen nuestra privacidad bajo la Ley N.º 8968 de Costa Rica?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+                <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
+              </span>
+            </button>
+            <div class="accordion-content">
+              <div data-i18n-html="faq2_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+                La confianza de su familia es sagrada. Todas las notas clínicas, observaciones del desarrollo y diagnósticos digitales del hogar se manejan en estricto cumplimiento de la <strong>Ley N.º 8968 de Costa Rica</strong> (<em>Ley de Protección de la Persona frente al Tratamiento de sus Datos Personales</em>) y el secreto profesional médico. Solicitamos consentimiento informado explícito, resguardamos la información en entornos cifrados y jamás compartimos datos con colegios ni terceros.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 3: Preventive Scope -->
+          <div class="accordion-item bg-white rounded-2xl border border-sage/15 shadow-sm">
+            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faq3_q" class="font-serif font-semibold text-lg text-ink">¿Cuál es el alcance preventivo de la asesoría médica y de neurodesarrollo?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+                <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
+              </span>
+            </button>
+            <div class="accordion-content">
+              <div data-i18n-html="faq3_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+                Nuestro servicio se enfoca en la <strong>salud preventiva, tamizaje temprano, consejería en lactancia, orientación del desarrollo y formación de hábitos familiares</strong>. Complementa—y no sustituye—al pediatra de cabecera, los servicios de urgencias ni terapias clínicas especializadas (como neuropsicología o terapia del lenguaje). Cuando identificamos una señal que requiere atención urgente o diagnóstico especializado, le orientamos de inmediato hacia el especialista u hospital indicado en Costa Rica.
+              </div>
+            </div>
+          </div>
+
+          <!-- FAQ 4: Independent School Advice -->
+          <div class="accordion-item bg-white rounded-2xl border border-sage/15 shadow-sm">
+            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faq4_q" class="font-serif font-semibold text-lg text-ink">¿Tienen convenio o reciben comisiones de algún colegio privado?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+                <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
+              </span>
+            </button>
+            <div class="accordion-content">
+              <div data-i18n-html="faq4_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+                No. Somos <strong>100% independientes</strong> y no aceptamos comisiones ni pagos por referidos de ninguna institución educativa. Nuestras recomendaciones responden únicamente al perfil de desarrollo de su hijo, la logística familiar y nuestro conocimiento real del entorno escolar costarricense.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== FINAL CALLOUT CTA ==================== -->
+    <section class="py-16 bg-sage text-white">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 data-i18n="cta_banner_title" class="font-serif text-3xl sm:text-4xl font-semibold">¿Listos para sentirse acompañados en cada etapa?</h2>
+        <p data-i18n="cta_banner_sub" class="text-white/85 mt-3 max-w-2xl mx-auto text-base sm:text-lg">
+          Escríbanos para coordinar su sesión de orientación en español o inglés—de forma virtual o presencial en la GAM.
+        </p>
+        <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a data-wa-key="wa_banner" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Quisiera%20coordinar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n%20familiar." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 bg-white text-sage-dark hover:bg-cream font-semibold px-8 py-4 rounded-full shadow-md transition-all">
+            <i data-lucide="message-circle" class="w-5 h-5 text-sage"></i>
+            <span data-i18n="cta_banner_wa">Escribir por WhatsApp</span>
+          </a>
+          <button type="button" onclick="openBookingModal()" class="inline-flex items-center gap-2 border border-white/40 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full transition-all">
+            <i data-lucide="calendar-heart" class="w-5 h-5"></i>
+            <span data-i18n="cta_banner_modal">Elegir Paquete y Agendar</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer class="bg-ink text-white/80 pt-16 pb-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+        <!-- Brand Info -->
+        <div class="md:col-span-5 space-y-4">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-lg bg-sage text-white flex items-center justify-center">
+              <i data-lucide="compass" class="w-4 h-4"></i>
+            </span>
+            <span class="font-serif font-semibold text-xl text-white">Raíces &amp; Brújula CR</span>
+          </div>
+          <p data-i18n="footer_desc" class="text-sm text-white/70 leading-relaxed max-w-sm">
+            Consejería familiar multidisciplinaria, salud preventiva, orientación escolar y hábitos digitales en Costa Rica.
+          </p>
+          <div class="flex items-center gap-3 text-sm pt-1">
+            <i data-lucide="map-pin" class="w-4 h-4 text-terracotta shrink-0"></i>
+            <span data-i18n="footer_loc">Gran Área Metropolitana (GAM) y Modalidad Virtual</span>
+          </div>
+        </div>
+
+        <!-- Quick Links -->
+        <div class="md:col-span-3 space-y-3">
+          <h4 data-i18n="footer_nav_title" class="text-xs uppercase tracking-wider font-bold text-white">Navegación</h4>
+          <ul class="space-y-2 text-sm">
+            <li><a href="#pillars" data-i18n="footer_l1" class="hover:text-white transition-colors">Tres Pilares</a></li>
+            <li><a href="#packages" data-i18n="footer_l2" class="hover:text-white transition-colors">Paquetes de Servicio</a></li>
+            <li><a href="#team" data-i18n="footer_l3" class="hover:text-white transition-colors">Nuestro Equipo</a></li>
+            <li><a href="#faq" data-i18n="footer_l4" class="hover:text-white transition-colors">Preguntas y Privacidad</a></li>
+          </ul>
+        </div>
+
+        <!-- Direct Contact -->
+        <div class="md:col-span-4 space-y-3">
+          <h4 data-i18n="footer_contact_title" class="text-xs uppercase tracking-wider font-bold text-white">Atención Directa</h4>
+          <p data-i18n="footer_hours" class="text-sm text-white/70">Lunes a Sábado · Con cita previa</p>
+          <a data-wa-key="wa_footer" href="https://wa.me/50688880000?text=%C2%A1Hola%20Ra%C3%ADces%20%26%20Br%C3%BAjula!%20Tengo%20una%20consulta%20sobre%20sus%20servicios." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-ink font-semibold text-sm px-5 py-2.5 rounded-full transition-colors">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            WhatsApp +506 8888-0000
+          </a>
+        </div>
+      </div>
+
+      <!-- Legal Disclaimer -->
+      <div class="pt-8 space-y-4 text-xs text-white/55 leading-relaxed">
+        <p data-i18n-html="footer_legal">
+          <strong class="text-white/80">Aviso Legal y de Confidencialidad:</strong> Todas las sesiones y registros familiares se manejan bajo estricto secreto profesional y conforme a la <strong>Ley N.º 8968 de Costa Rica</strong> (Protección de Datos Personales). Nuestro acompañamiento clínico, pedagógico y tecnológico es estrictamente preventivo, educativo y de asesoría; no sustituye la atención médica de emergencia, servicios hospitalarios ni tratamientos pediátricos o psiquiátricos continuos. En caso de emergencia médica en Costa Rica, comuníquese de inmediato al <strong>9-1-1</strong> o acuda al centro de emergencias más cercano.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2">
+          <span>&copy; <span id="year"></span> Raíces &amp; Brújula Familia CR. <span data-i18n="footer_rights">Todos los derechos reservados.</span></span>
+          <span data-i18n="footer_made">Hecho con dedicación para familias en Costa Rica.</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== FLOATING WHATSAPP BUTTON ==================== -->
+  <a data-wa-key="wa_float" href="https://wa.me/50688880000?text=%C2%A1Hola%20Ra%C3%ADces%20%26%20Br%C3%BAjula!%20Quisiera%20agendar%20una%20orientaci%C3%B3n." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp" class="fixed bottom-6 right-6 z-40 group flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white pl-4 pr-5 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+    <i data-lucide="message-circle" class="w-6 h-6 fill-current"></i>
+    <span data-i18n="wa_float_label" class="font-semibold text-sm hidden sm:inline">WhatsApp Directo</span>
+  </a>
+
+  <!-- ==================== BOOKING ORIENTATION MODAL ==================== -->
+  <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="bg-white rounded-3xl max-w-md w-full p-7 shadow-2xl border border-sage/15 relative">
+      <button type="button" onclick="closeBookingModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-cream hover:bg-sage-light text-ink flex items-center justify-center transition-colors" aria-label="Cerrar ventana">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+
+      <span data-i18n="modal_kicker" class="text-xs uppercase tracking-wider font-bold text-terracotta">Registro Rápido</span>
+      <h3 id="modal-title" data-i18n="modal_title" class="font-serif text-2xl font-semibold text-ink mt-1">Agendar Orientación</h3>
+      <p data-i18n="modal_desc" class="text-xs text-muted mt-1.5 mb-5">Seleccione el paquete y la modalidad para abrir un mensaje prellenado en WhatsApp directamente con nuestro equipo.</p>
+
+      <form id="booking-form" class="space-y-4">
+        <div>
+          <label for="parent-name" data-i18n="modal_name_label" class="block text-xs font-semibold text-ink mb-1">Su Nombre</label>
+          <input id="parent-name" type="text" required placeholder="Ej., Sofía Vargas" class="w-full rounded-xl border border-sage/20 px-4 py-2.5 text-sm focus:outline-none focus:border-sage" />
+        </div>
+
+        <div>
+          <label for="package-select" data-i18n="modal_pkg_label" class="block text-xs font-semibold text-ink mb-1">Etapa / Paquete</label>
+          <select id="package-select" class="w-full rounded-xl border border-sage/20 px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-sage">
+            <option value="pkg1" data-i18n="opt_pkg1">Primeros 100 Días (0–6 meses)</option>
+            <option value="pkg2" data-i18n="opt_pkg2">Ruta Escolar CR (2–6 años)</option>
+            <option value="pkg3" data-i18n="opt_pkg3">Brújula Digital y Hábitos (7–17 años)</option>
+            <option value="discovery" data-i18n="opt_disc">Orientación Exploratoria (30 min)</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="modality-select" data-i18n="modal_mod_label" class="block text-xs font-semibold text-ink mb-1">Modalidad</label>
+            <select id="modality-select" class="w-full rounded-xl border border-sage/20 px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-sage">
+              <option value="virtual" data-i18n="opt_virtual">Virtual (Videollamada)</option>
+              <option value="gam" data-i18n="opt_gam">Presencial (GAM)</option>
+            </select>
+          </div>
+          <div>
+            <label for="language-select" data-i18n="modal_lang_label" class="block text-xs font-semibold text-ink mb-1">Idioma</label>
+            <select id="language-select" class="w-full rounded-xl border border-sage/20 px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-sage">
+              <option value="Español">Español</option>
+              <option value="English">English</option>
+            </select>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-sage hover:bg-sage-dark text-white font-semibold py-3.5 rounded-full shadow-sm transition-colors">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span data-i18n="modal_submit">Continuar a WhatsApp</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== SCRIPTS & I18N DICTIONARY ==================== -->
+  <script>
+    const WHATSAPP_NUMBER = '50688880000'; // Reemplazar con número real de WhatsApp Business
+
+    const translations = {
+      es: {
+        meta_title: 'Raíces & Brújula CR | Consejería Familiar, Salud y Neurodesarrollo',
+        brand_sub: 'Asesoría Familiar · Costa Rica',
+        nav_approach: 'Nuestro Enfoque',
+        nav_packages: 'Paquetes',
+        nav_team: 'Nuestro Equipo',
+        nav_faq: 'Preguntas Frecuentes',
+        nav_cta: 'Agendar Orientación',
+
+        hero_badge: 'Presencial en la GAM y Virtual en todo Costa Rica',
+        hero_title: 'Tranquilidad para su familia, desde la <span class="text-sage italic font-medium">primera toma</span> hasta la <span class="text-slate-soft">adolescencia</span>.',
+        hero_subtitle: 'Consejería familiar integral, salud y neurodesarrollo en Costa Rica—uniendo medicina clínica, pedagogía infantil y hábitos tecnológicos saludables bajo un mismo equipo de confianza.',
+        hero_cta_wa: 'Agendar por WhatsApp',
+        hero_cta_pkg: 'Ver Paquetes',
+        trust_privacy: 'Privacidad Ley N.º 8968',
+        trust_parents: 'Padres de 4 hijos (7–21 años)',
+        trust_schools: 'Experiencia en colegios de CR',
+
+        hero_card_kicker: 'Acompañamiento Integral 360°',
+        hero_card_title: 'Una Familia, Tres Miradas',
+        lens1_title: 'Mirada Clínica y de Lactancia',
+        lens1_desc: 'Salud preventiva basada en evidencia, alimentación infantil y tamizaje del neurodesarrollo.',
+        lens2_title: 'Mirada Pedagógica y Escolar CR',
+        lens2_desc: 'Hitos tempranos y guía serena en procesos de admisión a colegios privados en Costa Rica.',
+        lens3_title: 'Mirada Digital y de Seguridad',
+        lens3_desc: 'Límites prácticos, protección de la red del hogar y acuerdos saludables frente a las pantallas.',
+        bilingual_note: '<strong class="text-ink">Atención Bilingüe:</strong> Consultas disponibles en español e inglés para familias locales y expatriadas.',
+
+        pillars_kicker: 'Nuestra Propuesta de Valor',
+        pillars_title: 'Tres disciplinas trabajando juntas por su hijo o hija',
+        pillars_subtitle: 'Los retos de la crianza rara vez pertenecen a una sola área. Integramos criterio médico, etapa educativa y vida digital en planes claros y tranquilos.',
+
+        p1_role: 'Medicina',
+        p1_title: 'Salud y Lactancia Materna',
+        p1_desc: 'Orientación clínica cercana y basada en evidencia para recién nacidos, niños y adolescentes—ayudando a distinguir señales reales de alerta frente a procesos normales.',
+        p1_b1: 'Valoración de agarre, producción y lactancia sin dolor',
+        p1_b2: 'Crecimiento preventivo, higiene del sueño y alimentación',
+        p1_b3: 'Seguimiento temprano de hitos del neurodesarrollo',
+
+        p2_role: 'Educación Preescolar',
+        p2_title: 'Desarrollo y Guía Escolar CR',
+        p2_desc: 'Experiencia pedagógica unida a nuestra vivencia real como padres en colegios privados de Costa Rica, para encontrar el entorno que mejor se adapta a su hijo.',
+        p2_b1: 'Estimulación mediante juego, lenguaje y madurez emocional',
+        p2_b2: 'Comparativa de currículos MEP, IB y calendario internacional',
+        p2_b3: 'Preparación para entrevistas de admisión y adaptación suave',
+
+        p3_role: 'Ingeniería en Sistemas',
+        p3_title: 'Tecnología y Hábitos Digitales',
+        p3_desc: 'Acompañamos a las familias con soluciones técnicas reales—sin alarmismo—para proteger la atención, el descanso nocturno y la seguridad en línea.',
+        p3_b1: 'Filtrado desde el router y controles parentales según edad',
+        p3_b2: 'Acuerdos familiares para videojuegos, pantallas y primer celular',
+        p3_b3: 'Ciudadanía digital, privacidad y prevención del ciberacoso',
+
+        pkg_kicker: 'Programas a la Medida',
+        pkg_title: 'Paquetes por Etapa',
+        pkg_subtitle: 'Acompañamiento focalizado y transparente en las tres transiciones más importantes de la infancia y la adolescencia.',
+
+        pkg1_age: '0–6 Meses',
+        pkg1_tag: 'Enfoque Médico y Vínculo',
+        pkg1_title: 'Primeros 100 Días (0-6 meses)',
+        pkg1_desc: 'Respaldo clínico y emocional continuo para futuros padres o recién llegados a casa con su bebé, guiando lactancia, descanso y señales tempranas.',
+        pkg1_price_sub: '/ 2 sesiones + seguimiento WhatsApp por 14 días',
+        pkg1_b1: 'Valoración de 60 min en lactancia y salud neonatal (GAM o virtual)',
+        pkg1_b2: 'Guía personalizada de tomas, ganancia de peso y sueño seguro',
+        pkg1_b3: 'Lista de chequeo de neurodesarrollo sensorial y motor temprano',
+        pkg1_b4: 'Sesión de control y resolución directa de dudas clínicas',
+        pkg1_cta: 'Agendar Primeros 100 Días',
+
+        pkg2_badge: 'Más Solicitado',
+        pkg2_age: '2–6 Años',
+        pkg2_tag: 'Pedagógico y Clínico',
+        pkg2_title: 'Ruta Escolar CR (2-6 años)',
+        pkg2_desc: 'Orientación imparcial para evaluar la madurez del desarrollo y elegir el preescolar o escuela ideal en Costa Rica sin estrés ni desinformación.',
+        pkg2_price_sub: '/ Evaluación integral + Mapa de Colegios',
+        pkg2_b1: 'Perfil de apresto escolar y emocional (Medicina + Preescolar)',
+        pkg2_b2: 'Preselección de 3 a 5 colegios privados compatibles (GAM y bilingües)',
+        pkg2_b3: 'Fechas de admisión, rangos de inversión y preparación para entrevistas',
+        pkg2_b4: 'Guía práctica para una transición serena y manejo de apego',
+        pkg2_cta: 'Agendar Ruta Escolar CR',
+
+        pkg3_age: '7–17 Años',
+        pkg3_tag: 'Tecnología y Neurodesarrollo',
+        pkg3_title: 'Brújula Digital y Hábitos (7-17 años)',
+        pkg3_desc: 'Plan conjunto de Ingeniería y Medicina para transformar las peleas por pantallas en autonomía digital saludable, mejor descanso y seguridad real.',
+        pkg3_price_sub: '/ Diagnóstico familiar + Configuración técnica en vivo',
+        pkg3_b1: 'Evaluación del impacto de pantallas en atención, ánimo y sueño',
+        pkg3_b2: 'Configuración en vivo de filtros DNS, Family Link o Apple Screen Time',
+        pkg3_b3: 'Acuerdo Digital Familiar personalizado según la edad de su hijo',
+        pkg3_b4: 'Guía sobre redes sociales, videojuegos y uso responsable de IA',
+        pkg3_cta: 'Agendar Brújula Digital',
+
+        custom_title: '¿No está seguro de cuál etapa se ajusta mejor a su familia hoy?',
+        custom_desc: 'Inicie con una Orientación Exploratoria de 30 minutos o solicite un plan combinado para varios hijos.',
+        custom_cta: 'Solicitar Orientación Personalizada →',
+
+        team_kicker: 'Credenciales y Experiencia Real',
+        team_title: 'Profesionales de formación. <span class="text-sage">Padres de cuatro</span> en la vida real.',
+        team_callout: '<strong class="text-ink">Respaldados por la experiencia familiar:</strong> Más allá de nuestros títulos, hemos criado a cuatro hijos—hoy de <strong class="text-ink">7, 12, 16 y 21 años</strong>—acompañándolos en primera persona por colegios privados de Costa Rica, la primera infancia y la adolescencia.',
+
+        t_ph_sub: 'Recomendado: retrato cálido 800×600px',
+        t1_ph_title: 'Espacio para Fotografía · Medicina',
+        t1_role: 'Dirección Clínica y Lactancia',
+        t1_name: 'Dr./Dra. [Nombre Completo]',
+        t1_bio: 'Médico y Cirujano incorporado al Colegio de Médicos y Cirujanos de Costa Rica, con formación especializada en medicina de lactancia, nutrición infantil y neurodesarrollo temprano.',
+        t1_tag1: 'Pediatría Preventiva',
+        t1_tag2: 'Asesoría en Lactancia',
+
+        t2_ph_title: 'Espacio para Fotografía · Preescolar',
+        t2_role: 'Primera Infancia y Guía Escolar',
+        t2_name: 'Lic. [Nombre Completo]',
+        t2_bio: 'Docente de Educación Preescolar (COLYPRO) especializada en estimulación neurosensorial, regulación emocional y orientación para familias ante el ecosistema de colegios privados en Costa Rica.',
+        t2_tag1: 'Hitos Tempranos',
+        t2_tag2: 'Admisión Escolar CR',
+
+        t3_ph_title: 'Espacio para Fotografía · Ingeniería',
+        t3_role: 'Hábitos Digitales y Seguridad',
+        t3_name: 'Ing. [Nombre Completo]',
+        t3_bio: 'Ingeniero en Sistemas enfocado en ciberseguridad doméstica, ergonomía digital y en traducir los controles parentales técnicos en acuerdos familiares respetuosos para niños y adolescentes.',
+        t3_tag1: 'Seguridad de Red',
+        t3_tag2: 'Hábitos Tecnológicos',
+
+        faq_kicker: 'Claridad y Confianza',
+        faq_title: 'Preguntas Frecuentes',
+        faq_subtitle: 'Todo lo que necesita saber sobre nuestras modalidades, privacidad de datos y alcance preventivo en Costa Rica.',
+        faq1_q: '¿Ofrecen sesiones tanto virtuales como presenciales en la GAM?',
+        faq1_a: 'Sí. Brindamos <strong>consultas presenciales a domicilio u oficina</strong> dentro del Gran Área Metropolitana (GAM)—incluyendo Escazú, Santa Ana, San José, Curridabat, Tres Ríos y Heredia—especialmente útiles para valoraciones de lactancia neonatal y configuración práctica del router en casa. Para familias fuera de la GAM, en zonas costeras o que prefieran comodidad remota, el 100% de nuestros paquetes está disponible por videollamada segura.',
+        faq2_q: '¿Cómo protegen nuestra privacidad bajo la Ley N.º 8968 de Costa Rica?',
+        faq2_a: 'La confianza de su familia es sagrada. Todas las notas clínicas, observaciones del desarrollo y diagnósticos digitales del hogar se manejan en estricto cumplimiento de la <strong>Ley N.º 8968 de Costa Rica</strong> (<em>Ley de Protección de la Persona frente al Tratamiento de sus Datos Personales</em>) y el secreto profesional médico. Solicitamos consentimiento informado explícito, resguardamos la información en entornos cifrados y jamás compartimos datos con colegios ni terceros.',
+        faq3_q: '¿Cuál es el alcance preventivo de la asesoría médica y de neurodesarrollo?',
+        faq3_a: 'Nuestro servicio se enfoca en la <strong>salud preventiva, tamizaje temprano, consejería en lactancia, orientación del desarrollo y formación de hábitos familiares</strong>. Complementa—y no sustituye—al pediatra de cabecera, los servicios de urgencias ni terapias clínicas especializadas (como neuropsicología o terapia del lenguaje). Cuando identificamos una señal que requiere atención urgente o diagnóstico especializado, le orientamos de inmediato hacia el especialista u hospital indicado en Costa Rica.',
+        faq4_q: '¿Tienen convenio o reciben comisiones de algún colegio privado?',
+        faq4_a: 'No. Somos <strong>100% independientes</strong> y no aceptamos comisiones ni pagos por referidos de ninguna institución educativa. Nuestras recomendaciones responden únicamente al perfil de desarrollo de su hijo, la logística familiar y nuestro conocimiento real del entorno escolar costarricense.',
+
+        cta_banner_title: '¿Listos para sentirse acompañados en cada etapa?',
+        cta_banner_sub: 'Escríbanos para coordinar su sesión de orientación en español o inglés—de forma virtual o presencial en la GAM.',
+        cta_banner_wa: 'Escribir por WhatsApp',
+        cta_banner_modal: 'Elegir Paquete y Agendar',
+
+        footer_desc: 'Consejería familiar multidisciplinaria, salud preventiva, orientación escolar y hábitos digitales en Costa Rica.',
+        footer_loc: 'Gran Área Metropolitana (GAM) y Modalidad Virtual',
+        footer_nav_title: 'Navegación',
+        footer_l1: 'Tres Pilares',
+        footer_l2: 'Paquetes de Servicio',
+        footer_l3: 'Nuestro Equipo',
+        footer_l4: 'Preguntas y Privacidad',
+        footer_contact_title: 'Atención Directa',
+        footer_hours: 'Lunes a Sábado · Con cita previa',
+        footer_legal: '<strong class="text-white/80">Aviso Legal y de Confidencialidad:</strong> Todas las sesiones y registros familiares se manejan bajo estricto secreto profesional y conforme a la <strong>Ley N.º 8968 de Costa Rica</strong> (Protección de Datos Personales). Nuestro acompañamiento clínico, pedagógico y tecnológico es estrictamente preventivo, educativo y de asesoría; no sustituye la atención médica de emergencia, servicios hospitalarios ni tratamientos pediátricos o psiquiátricos continuos. En caso de emergencia médica en Costa Rica, comuníquese de inmediato al <strong>9-1-1</strong> o acuda al centro de emergencias más cercano.',
+        footer_rights: 'Todos los derechos reservados.',
+        footer_made: 'Hecho con dedicación para familias en Costa Rica.',
+        wa_float_label: 'WhatsApp Directo',
+
+        modal_kicker: 'Registro Rápido',
+        modal_title: 'Agendar Orientación',
+        modal_desc: 'Seleccione el paquete y la modalidad para abrir un mensaje prellenado en WhatsApp directamente con nuestro equipo.',
+        modal_name_label: 'Su Nombre',
+        modal_name_ph: 'Ej., Sofía Vargas',
+        modal_pkg_label: 'Etapa / Paquete',
+        opt_pkg1: 'Primeros 100 Días (0–6 meses)',
+        opt_pkg2: 'Ruta Escolar CR (2–6 años)',
+        opt_pkg3: 'Brújula Digital y Hábitos (7–17 años)',
+        opt_disc: 'Orientación Exploratoria (30 min)',
+        modal_mod_label: 'Modalidad',
+        opt_virtual: 'Virtual (Videollamada)',
+        opt_gam: 'Presencial (GAM)',
+        modal_lang_label: 'Idioma',
+        modal_submit: 'Continuar a WhatsApp',
+
+        wa_hero: '¡Hola Raíces & Brújula! Quisiera agendar una sesión de orientación familiar.',
+        wa_pkg1: '¡Hola! Me interesa agendar el paquete Primeros 100 Días (0-6 meses).',
+        wa_pkg2: '¡Hola! Me interesa agendar el paquete Ruta Escolar CR (2-6 años).',
+        wa_pkg3: '¡Hola! Me interesa agendar el paquete Brújula Digital y Hábitos (7-17 años).',
+        wa_banner: '¡Hola! Quisiera coordinar una sesión de orientación familiar.',
+        wa_footer: '¡Hola Raíces & Brújula! Tengo una consulta sobre sus servicios.',
+        wa_float: '¡Hola Raíces & Brújula! Quisiera agendar una orientación.'
+      },
+
+      en: {
+        meta_title: 'Raíces & Brújula CR | Family Counseling, Health & Neurodevelopment',
+        brand_sub: 'Family Advisory · Costa Rica',
+        nav_approach: 'Our Approach',
+        nav_packages: 'Packages',
+        nav_team: 'Our Team',
+        nav_faq: 'FAQ',
+        nav_cta: 'Book Orientation',
+
+        hero_badge: 'GAM In-Person & Virtual Across Costa Rica',
+        hero_title: 'Peace of mind for your family, from <span class="text-sage italic font-medium">first latch</span> through <span class="text-slate-soft">adolescence</span>.',
+        hero_subtitle: 'Integrated family counseling, health, and neurodevelopment guidance in Costa Rica—uniting clinical medicine, early childhood pedagogy, and healthy technology habits under one trusted team.',
+        hero_cta_wa: 'Book via WhatsApp',
+        hero_cta_pkg: 'View Packages',
+        trust_privacy: 'Law No. 8968 Data Privacy',
+        trust_parents: 'Parents of 4 (Ages 7–21)',
+        trust_schools: 'CR Private School Insight',
+
+        hero_card_kicker: '360° Multidisciplinary Care',
+        hero_card_title: 'One Family, Three Lenses',
+        lens1_title: 'Clinical & Lactation Lens',
+        lens1_desc: 'Evidence-based preventive health, infant feeding, and neurodevelopmental screening.',
+        lens2_title: 'Pedagogical & CR School Lens',
+        lens2_desc: 'Early milestones and calm guidance through Costa Rican private school admissions.',
+        lens3_title: 'Digital Habits & Safety Lens',
+        lens3_desc: 'Practical boundaries, home network protection, and healthy screen agreements as kids grow.',
+        bilingual_note: '<strong class="text-ink">Bilingual Guidance:</strong> Consultations available in Spanish &amp; English for local and expat families.',
+
+        pillars_kicker: 'Our Value Proposition',
+        pillars_title: 'Three disciplines working together for your child',
+        pillars_subtitle: 'Parenting challenges rarely fit into a single specialty. We connect medical care, educational milestones, and digital life into clear, calm action plans.',
+
+        p1_role: 'Medical Doctor',
+        p1_title: 'Health & Breastfeeding',
+        p1_desc: 'Compassionate, evidence-based clinical orientation for newborns, children, and teens—helping parents distinguish real red flags from normal development.',
+        p1_b1: 'Latch assessment, milk supply & painless feeding plans',
+        p1_b2: 'Preventive growth, sleep hygiene & nutrition guidance',
+        p1_b3: 'Early neurodevelopmental milestone monitoring',
+
+        p2_role: 'Preschool Teacher',
+        p2_title: 'Development & CR School Guidance',
+        p2_desc: 'Pedagogical expertise combined with real, firsthand parenting across Costa Rican private schools to match your child with the right environment.',
+        p2_b1: 'Play-based stimulation, language & emotional readiness',
+        p2_b2: 'MEP, IB, and international calendar school comparisons',
+        p2_b3: 'Admission interview prep & gentle school transitions',
+
+        p3_role: 'Systems Engineer',
+        p3_title: 'Technology & Digital Habits',
+        p3_desc: 'Empowering families—not scaring them—with practical engineering know-how and realistic household rules that protect attention, sleep, and online safety.',
+        p3_b1: 'Router-level filtering & age-appropriate parental controls',
+        p3_b2: 'Collaborative screen, gaming & first-phone agreements',
+        p3_b3: 'Digital citizenship, privacy & cyberbullying prevention',
+
+        pkg_kicker: 'Tailored Programs',
+        pkg_title: 'Service Packages by Stage',
+        pkg_subtitle: 'Focused, transparent counseling packages designed around the three most pivotal transitions of childhood and adolescence.',
+
+        pkg1_age: '0–6 Months',
+        pkg1_tag: 'Medical & Bonding Focus',
+        pkg1_title: 'First 100 Days (0-6 months)',
+        pkg1_desc: 'Calm, continuous clinical and emotional support for expectant or new parents navigating breastfeeding, recovery, and newborn cues.',
+        pkg1_price_sub: '/ 2 sessions + 14-day WhatsApp follow-up',
+        pkg1_b1: '60-min lactation & newborn health assessment (GAM home or virtual)',
+        pkg1_b2: 'Personalized feeding, weight-gain & safe sleep routine guide',
+        pkg1_b3: 'Early sensory & motor neurodevelopment checklist',
+        pkg1_b4: 'Follow-up check-in & direct clinical Q&A support',
+        pkg1_cta: 'Book First 100 Days',
+
+        pkg2_badge: 'Most Requested',
+        pkg2_age: '2–6 Years',
+        pkg2_tag: 'Pedagogical & Clinical',
+        pkg2_title: 'CR School Route (2-6 years)',
+        pkg2_desc: 'Unbiased guidance to assess developmental readiness and choose the ideal Costa Rican preschool or primary school without overwhelm.',
+        pkg2_price_sub: '/ Comprehensive Assessment + School Roadmap',
+        pkg2_b1: 'Developmental & emotional school-readiness profile (MD + Preschool Teacher)',
+        pkg2_b2: 'Shortlist of 3–5 compatible CR private schools (GAM & bilingual options)',
+        pkg2_b3: 'Admission timelines, tuition expectations & interview prep',
+        pkg2_b4: 'Gentle transition & separation-anxiety toolkit for home',
+        pkg2_cta: 'Book CR School Route',
+
+        pkg3_age: '7–17 Years',
+        pkg3_tag: 'Tech & Neurodevelopment',
+        pkg3_title: 'Tech Compass & Habits (7-17 years)',
+        pkg3_desc: 'A joint Engineering + Clinical plan to turn screen battles into healthy digital independence, better sleep, and safer online habits.',
+        pkg3_price_sub: '/ Family Audit + Live Tech Setup',
+        pkg3_b1: 'Assessment of screen impact on attention, mood & adolescent sleep',
+        pkg3_b2: 'Live setup of DNS filtering, Family Link / Apple Screen Time',
+        pkg3_b3: 'Custom Family Digital Agreement tailored to your child’s age',
+        pkg3_b4: 'Social media, gaming & AI literacy guidance for parents & teens',
+        pkg3_cta: 'Book Tech Compass',
+
+        custom_title: 'Not sure which stage fits your family right now?',
+        custom_desc: 'Start with a 30-minute Discovery Orientation or request a custom sibling plan.',
+        custom_cta: 'Request Custom Orientation →',
+
+        team_kicker: 'Credentials & Lived Experience',
+        team_title: 'Professionals by training. <span class="text-sage">Parents of four</span> in real life.',
+        team_callout: '<strong class="text-ink">Backed by family reality:</strong> Beyond our degrees, we have raised four children—now aged <strong class="text-ink">7, 12, 16, and 21</strong>—guiding them firsthand through Costa Rican private schools, early childhood, and adolescence.',
+
+        t_ph_sub: 'Recommended: 800×600px warm portrait',
+        t1_ph_title: 'Photo Placeholder · Medical Doctor',
+        t1_role: 'Clinical & Lactation Lead',
+        t1_name: 'Dr. [Full Name], M.D.',
+        t1_bio: 'Licensed Physician & Surgeon (Colegio de Médicos y Cirujanos de Costa Rica) with specialized training in breastfeeding medicine, infant nutrition, and early neurodevelopment.',
+        t1_tag1: 'Preventive Pediatrics',
+        t1_tag2: 'Lactation Counseling',
+
+        t2_ph_title: 'Photo Placeholder · Preschool Educator',
+        t2_role: 'Early Childhood & School Advisor',
+        t2_name: 'Lic. [Full Name]',
+        t2_bio: 'Preschool Educator (COLYPRO) specializing in neuro-sensory stimulation, emotional regulation, and guiding families through Costa Rican private & bilingual school ecosystems.',
+        t2_tag1: 'Early Milestones',
+        t2_tag2: 'CR School Admissions',
+
+        t3_ph_title: 'Photo Placeholder · Systems Engineer',
+        t3_role: 'Digital Habits & Family Security',
+        t3_name: 'Ing. [Full Name]',
+        t3_bio: 'Systems Engineer focused on home cybersecurity, digital ergonomics, and translating complex parental controls into clear, respectful household agreements for children and teens.',
+        t3_tag1: 'Home Network Safety',
+        t3_tag2: 'Healthy Tech Habits',
+
+        faq_kicker: 'Clarity & Trust',
+        faq_title: 'Frequently Asked Questions',
+        faq_subtitle: 'Everything you need to know about our modalities, privacy standards, and advisory scope in Costa Rica.',
+        faq1_q: 'Do you offer both virtual and in-person sessions in the GAM?',
+        faq1_a: 'Yes. We offer <strong>in-person home or office consultations</strong> across the Greater Metropolitan Area (GAM)—including Escazú, Santa Ana, San José, Curridabat, Tres Ríos, and Heredia—particularly valuable for newborn lactation assessments and hands-on home Wi-Fi/router setups. For families outside the GAM, in coastal areas, or preferring remote convenience, 100% of our packages are also available via secure video call.',
+        faq2_q: 'How do you protect our family’s privacy under Costa Rican Law No. 8968?',
+        faq2_a: 'Your family’s trust is non-negotiable. All clinical notes, developmental observations, and household digital assessments are handled in strict compliance with <strong>Costa Rican Law No. 8968</strong> (<em>Ley de Protección de la Persona frente al Tratamiento de sus Datos Personales</em>) and medical confidentiality ethics. We obtain explicit informed consent prior to every process, store sensitive records in encrypted environments, and never share data with schools or third parties.',
+        faq3_q: 'What is the preventive scope of your medical and neurodevelopmental advisory?',
+        faq3_a: 'Our service focuses on <strong>preventive health, early screening, breastfeeding counseling, developmental orientation, and family habit coaching</strong>. It complements—rather than replaces—your child’s primary pediatrician, urgent care, or specialized clinical therapy (such as neuropsychology or speech therapy). Whenever we detect a clinical sign that warrants emergency care or specialized intervention, we guide you promptly to the appropriate hospital or specialist in Costa Rica.',
+        faq4_q: 'Are you affiliated with or paid commissions by any private schools?',
+        faq4_a: 'No. We remain <strong>100% independent</strong> and accept zero referral fees or commissions from any school. Our recommendations are based purely on your child’s developmental profile, family logistics, and our firsthand knowledge of Costa Rica’s private school landscape.',
+
+        cta_banner_title: 'Ready to feel supported at every stage?',
+        cta_banner_sub: 'Send us a message to schedule your orientation session in Spanish or English—virtual or in-person within the GAM.',
+        cta_banner_wa: 'Chat on WhatsApp Now',
+        cta_banner_modal: 'Choose Package & Book',
+
+        footer_desc: 'Multidisciplinary family counseling, preventive health, school orientation, and digital habits advisory in Costa Rica.',
+        footer_loc: 'Greater Metropolitan Area (GAM) & Virtual Worldwide',
+        footer_nav_title: 'Navigation',
+        footer_l1: 'Three Pillars',
+        footer_l2: 'Service Packages',
+        footer_l3: 'Our Team',
+        footer_l4: 'FAQ & Privacy',
+        footer_contact_title: 'Direct Orientation',
+        footer_hours: 'Monday – Saturday · By appointment',
+        footer_legal: '<strong class="text-white/80">Confidentiality &amp; Legal Disclaimer:</strong> All sessions and family records are treated with strict professional secrecy and protected under <strong>Costa Rican Law No. 8968</strong> (Protection of Personal Data). Our clinical, pedagogical, and technological guidance is strictly preventive, educational, and advisory in nature; it does not substitute emergency medical care, hospital services, or ongoing pediatric/psychiatric treatment. In case of a medical emergency in Costa Rica, please call <strong>9-1-1</strong> or visit the nearest emergency department immediately.',
+        footer_rights: 'All rights reserved.',
+        footer_made: 'Made with care for families in Costa Rica.',
+        wa_float_label: 'WhatsApp Us',
+
+        modal_kicker: 'Quick Intake',
+        modal_title: 'Book Your Orientation',
+        modal_desc: 'Select your focus area and modality to open a pre-filled WhatsApp message directly with our team.',
+        modal_name_label: 'Your Name',
+        modal_name_ph: 'e.g., Sofía Vargas',
+        modal_pkg_label: 'Stage / Package',
+        opt_pkg1: 'First 100 Days (0–6 months)',
+        opt_pkg2: 'CR School Route (2–6 years)',
+        opt_pkg3: 'Tech Compass & Habits (7–17 years)',
+        opt_disc: '30-min Discovery Orientation',
+        modal_mod_label: 'Modality',
+        opt_virtual: 'Virtual (Video Call)',
+        opt_gam: 'In-Person (GAM)',
+        modal_lang_label: 'Language',
+        modal_submit: 'Continue to WhatsApp',
+
+        wa_hero: 'Hello Raíces & Brújula! I would like to book a family orientation session.',
+        wa_pkg1: 'Hello! I am interested in booking the First 100 Days (0-6 months) package.',
+        wa_pkg2: 'Hello! I am interested in booking the CR School Route (2-6 years) package.',
+        wa_pkg3: 'Hello! I am interested in booking the Tech Compass & Habits (7-17 years) package.',
+        wa_banner: 'Hello! I would like to schedule a family counseling orientation.',
+        wa_footer: 'Hello Raíces & Brújula! I have a question about your services.',
+        wa_float: 'Hello Raíces & Brújula! I would like to book an orientation.'
+      }
+    };
+
+    let currentLang = 'es';
+
+    function setLanguage(lang) {
+      if (!translations[lang]) return;
+      currentLang = lang;
+      const dict = translations[lang];
+
+      // Update html lang attribute & document title
+      document.documentElement.lang = lang;
+      document.title = dict.meta_title;
+
+      // Update plain text elements
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key] !== undefined) el.textContent = dict[key];
+      });
+
+      // Update HTML-rich elements
+      document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.getAttribute('data-i18n-html');
+        if (dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+
+      // Update placeholder
+      const nameInput = document.getElementById('parent-name');
+      if (nameInput) nameInput.placeholder = dict.modal_name_ph;
+
+      // Sync preferred language dropdown inside modal
+      const langSelect = document.getElementById('language-select');
+      if (langSelect) langSelect.value = lang === 'es' ? 'Español' : 'English';
+
+      // Update WhatsApp links dynamically
+      document.querySelectorAll('[data-wa-key]').forEach(link => {
+        const key = link.getAttribute('data-wa-key');
+        if (dict[key]) {
+          link.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(dict[key])}`;
+        }
+      });
+
+      // Update Toggle Button Active Styles
+      const btnEs = document.getElementById('btn-lang-es');
+      const btnEn = document.getElementById('btn-lang-en');
+      if (lang === 'es') {
+        btnEs.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-sage text-white shadow-sm';
+        btnEn.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all text-muted hover:text-ink';
+      } else {
+        btnEn.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-sage text-white shadow-sm';
+        btnEs.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all text-muted hover:text-ink';
+      }
+
+      try {
+        localStorage.setItem('rb_lang', lang);
+      } catch (e) {}
+    }
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Dynamic Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Load saved language or default to Spanish
+    (function initLanguage() {
+      let initial = 'es';
+      try {
+        const saved = localStorage.getItem('rb_lang');
+        if (saved === 'en' || saved === 'es') initial = saved;
+      } catch (e) {}
+      setLanguage(initial);
+    })();
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function toggleMobileMenu(forceState) {
+      const isHidden = mobileMenu.classList.contains('hidden');
+      const shouldOpen = typeof forceState === 'boolean' ? forceState : isHidden;
+      mobileMenu.classList.toggle('hidden', !shouldOpen);
+      mobileMenuBtn.setAttribute('aria-expanded', String(shouldOpen));
+    }
+
+    mobileMenuBtn.addEventListener('click', () => toggleMobileMenu());
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => toggleMobileMenu(false));
+    });
+
+    // Interactive FAQ Accordion
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    accordionItems.forEach(item => {
+      const trigger = item.querySelector('.accordion-trigger');
+      trigger.addEventListener('click', () => {
+        const isOpen = item.classList.contains('is-open');
+        accordionItems.forEach(other => {
+          other.classList.remove('is-open');
+          other.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+        });
+        if (!isOpen) {
+          item.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+
+    // Booking Orientation Modal Logic
+    const bookingModal = document.getElementById('booking-modal');
+    const bookingForm = document.getElementById('booking-form');
+
+    function openBookingModal() {
+      bookingModal.classList.remove('hidden');
+      bookingModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeBookingModal() {
+      bookingModal.classList.add('hidden');
+      bookingModal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    bookingModal.addEventListener('click', (e) => {
+      if (e.target === bookingModal) closeBookingModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !bookingModal.classList.contains('hidden')) {
+        closeBookingModal();
+      }
+    });
+
+    // Route Booking Form to WhatsApp in active language
+    bookingForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('parent-name').value.trim();
+      const pkgEl = document.getElementById('package-select');
+      const modEl = document.getElementById('modality-select');
+      const pkgText = pkgEl.options[pkgEl.selectedIndex].text;
+      const modText = modEl.options[modEl.selectedIndex].text;
+      const prefLang = document.getElementById('language-select').value;
+
+      const message = currentLang === 'es'
+        ? `¡Hola Raíces & Brújula! Mi nombre es ${name}. Me gustaría agendar una orientación para: ${pkgText} (${modText}, idioma preferido: ${prefLang}).`
+        : `Hello Raíces & Brújula! My name is ${name}. I would like to book an orientation for: ${pkgText} (${modText}, preferred language: ${prefLang}).`;
+
+      const waUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+      closeBookingModal();
+    });
+  </script>
+</body>
+</html>
