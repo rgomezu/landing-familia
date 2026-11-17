@@ -20,6 +20,7 @@
           colors: {
             offwhite: '#FAF8F5',
             cream: '#F3EFEA',
+            sand: '#E2DCD2',
             sage: {
               DEFAULT: '#4A6B5D',
               dark: '#395448',
@@ -44,7 +45,7 @@
           },
           boxShadow: {
             soft: '0 10px 35px -10px rgba(36, 48, 44, 0.08)',
-            card: '0 4px 24px -4px rgba(74, 107, 93, 0.08)',
+            card: '0 4px 20px -4px rgba(36, 48, 44, 0.06)',
           }
         }
       }
@@ -55,16 +56,25 @@
   <script src="https://unpkg.com/lucide@latest"></script>
 
   <style>
+    /* Prevent horizontal overflow on iOS without breaking position: sticky */
+    html, body {
+      overflow-x: clip;
+    }
+
+    /* Clean iOS tap behavior */
+    button, a {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Rock-solid Accordion Animation for iOS Safari */
     .accordion-content {
-      display: grid;
-      grid-template-rows: 0fr;
-      transition: grid-template-rows 0.3s ease-out;
+      max-height: 0px;
+      overflow: hidden;
+      opacity: 0;
+      transition: max-height 0.32s ease, opacity 0.25s ease;
     }
     .accordion-item.is-open .accordion-content {
-      grid-template-rows: 1fr;
-    }
-    .accordion-inner {
-      overflow: hidden;
+      opacity: 1;
     }
     .accordion-icon {
       transition: transform 0.25s ease;
@@ -77,16 +87,16 @@
 <body class="bg-offwhite text-ink font-sans antialiased selection:bg-sage/20 selection:text-sage-dark">
 
   <!-- ==================== NAVBAR ==================== -->
-  <header class="sticky top-0 z-40 bg-offwhite/90 backdrop-blur-md border-b border-sage/10">
-    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-3" aria-label="Navegación Principal">
-      <!-- Textual Logo -->
-      <a href="#" class="flex items-center gap-2.5 group focus:outline-none shrink-0">
-        <span class="w-9 h-9 rounded-xl bg-sage text-white flex items-center justify-center shadow-sm group-hover:bg-sage-dark transition-colors">
-          <i data-lucide="compass" class="w-5 h-5"></i>
+  <header class="sticky top-0 z-40 bg-offwhite/95 backdrop-blur-md border-b border-sand">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-20 flex items-center justify-between gap-2" aria-label="Navegación Principal">
+      <!-- Textual Logo (Responsive sizing so 375px iPhones never overflow) -->
+      <a href="#" class="flex items-center gap-2 sm:gap-2.5 group focus:outline-none min-w-0">
+        <span class="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-sage text-white flex items-center justify-center shadow-sm group-hover:bg-sage-dark transition-colors shrink-0">
+          <i data-lucide="compass" class="w-4 h-4 sm:w-5 sm:h-5"></i>
         </span>
-        <div class="leading-tight">
-          <span class="font-serif font-semibold text-lg sm:text-xl tracking-tight text-ink block">Raíces &amp; Brújula</span>
-          <span data-i18n="brand_sub" class="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] text-sage font-semibold block">Asesoría Familiar · Costa Rica</span>
+        <div class="leading-tight min-w-0">
+          <span class="font-serif font-semibold text-base sm:text-xl tracking-tight text-ink block truncate">Raíces &amp; Brújula</span>
+          <span data-i18n="brand_sub" class="text-[9px] sm:text-[11px] uppercase tracking-[0.08em] sm:tracking-[0.14em] text-sage font-semibold block truncate">Asesoría Familiar · Costa Rica</span>
         </div>
       </a>
 
@@ -99,13 +109,13 @@
       </div>
 
       <!-- Language Switcher + Desktop CTA + Mobile Toggle -->
-      <div class="flex items-center gap-2.5 sm:gap-3">
+      <div class="flex items-center gap-2 sm:gap-3 shrink-0">
         <!-- ES / EN Toggle -->
-        <div class="inline-flex items-center bg-cream p-1 rounded-full border border-sage/15" role="group" aria-label="Cambiar idioma / Switch language">
-          <button type="button" id="btn-lang-es" onclick="setLanguage('es')" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-sage text-white shadow-sm">
+        <div class="inline-flex items-center bg-cream p-0.5 sm:p-1 rounded-full border border-sand" role="group" aria-label="Cambiar idioma / Switch language">
+          <button type="button" id="btn-lang-es" onclick="setLanguage('es')" class="px-2 sm:px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all bg-sage text-white shadow-sm">
             ES
           </button>
-          <button type="button" id="btn-lang-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-full text-xs font-bold transition-all text-muted hover:text-ink">
+          <button type="button" id="btn-lang-en" onclick="setLanguage('en')" class="px-2 sm:px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all text-muted hover:text-ink">
             EN
           </button>
         </div>
@@ -116,18 +126,18 @@
         </button>
 
         <button id="mobile-menu-btn" type="button" class="lg:hidden p-2 rounded-lg text-ink hover:bg-cream transition-colors" aria-label="Abrir menú" aria-expanded="false">
-          <i data-lucide="menu" class="w-6 h-6"></i>
+          <i data-lucide="menu" class="w-5 h-5 sm:w-6 sm:h-6"></i>
         </button>
       </div>
     </nav>
 
     <!-- Mobile Navigation Drawer -->
-    <div id="mobile-menu" class="hidden lg:hidden bg-offwhite border-b border-sage/10 px-4 pt-2 pb-6 space-y-3">
-      <a href="#pillars" data-i18n="nav_approach" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Nuestro Enfoque</a>
-      <a href="#packages" data-i18n="nav_packages" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Paquetes</a>
-      <a href="#team" data-i18n="nav_team" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Nuestro Equipo</a>
-      <a href="#faq" data-i18n="nav_faq" class="mobile-link block py-2 text-base font-medium text-ink hover:text-sage">Preguntas Frecuentes</a>
-      <button type="button" onclick="openBookingModal(); toggleMobileMenu(false);" class="w-full mt-2 inline-flex items-center justify-center gap-2 bg-sage hover:bg-sage-dark text-white text-sm font-semibold px-5 py-3 rounded-full shadow-sm">
+    <div id="mobile-menu" class="hidden lg:hidden bg-offwhite border-t border-sand px-4 pt-3 pb-6 space-y-2 shadow-sm">
+      <a href="#pillars" data-i18n="nav_approach" class="mobile-link block py-2.5 text-base font-medium text-ink hover:text-sage border-b border-sand/60">Nuestro Enfoque</a>
+      <a href="#packages" data-i18n="nav_packages" class="mobile-link block py-2.5 text-base font-medium text-ink hover:text-sage border-b border-sand/60">Paquetes</a>
+      <a href="#team" data-i18n="nav_team" class="mobile-link block py-2.5 text-base font-medium text-ink hover:text-sage border-b border-sand/60">Nuestro Equipo</a>
+      <a href="#faq" data-i18n="nav_faq" class="mobile-link block py-2.5 text-base font-medium text-ink hover:text-sage">Preguntas Frecuentes</a>
+      <button type="button" onclick="openBookingModal(); toggleMobileMenu(false);" class="w-full mt-3 inline-flex items-center justify-center gap-2 bg-sage hover:bg-sage-dark text-white text-sm font-semibold px-5 py-3.5 rounded-full shadow-sm">
         <i data-lucide="calendar-heart" class="w-4 h-4"></i>
         <span data-i18n="nav_cta">Agendar Orientación</span>
       </button>
@@ -136,41 +146,41 @@
 
   <main>
     <!-- ==================== HERO SECTION ==================== -->
-    <section class="relative overflow-hidden pt-12 pb-20 lg:pt-20 lg:pb-28">
-      <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-sage-light/70 blur-3xl -z-10"></div>
-      <div class="absolute bottom-0 -left-24 w-80 h-80 rounded-full bg-terracotta-light/80 blur-3xl -z-10"></div>
+    <section class="relative overflow-hidden pt-10 pb-16 sm:pt-14 sm:pb-20 lg:pt-20 lg:pb-28">
+      <div class="absolute -top-24 -right-24 w-80 sm:w-96 h-80 sm:h-96 rounded-full bg-sage-light/70 blur-3xl -z-10 pointer-events-none"></div>
+      <div class="absolute bottom-0 -left-24 w-72 sm:w-80 h-72 sm:h-80 rounded-full bg-terracotta-light/80 blur-3xl -z-10 pointer-events-none"></div>
 
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+        <div class="grid lg:grid-cols-12 gap-10 lg:gap-10 items-center">
           <!-- Left Copy -->
-          <div class="lg:col-span-7 space-y-7">
-            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sage/15 shadow-sm text-xs font-semibold text-sage">
-              <span class="w-2 h-2 rounded-full bg-terracotta"></span>
+          <div class="lg:col-span-7 space-y-6 sm:space-y-7">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-sand shadow-sm text-xs font-semibold text-sage">
+              <span class="w-2 h-2 rounded-full bg-terracotta shrink-0"></span>
               <span data-i18n="hero_badge">Presencial en la GAM y Virtual en todo Costa Rica</span>
             </div>
 
-            <h1 data-i18n-html="hero_title" class="font-serif text-4xl sm:text-5xl lg:text-[3.25rem] font-semibold text-ink leading-[1.15] tracking-tight">
+            <h1 data-i18n-html="hero_title" class="font-serif text-3xl sm:text-5xl lg:text-[3.25rem] font-semibold text-ink leading-[1.16] tracking-tight">
               Tranquilidad para su familia, desde la <span class="text-sage italic font-medium">primera toma</span> hasta la <span class="text-slate-soft">adolescencia</span>.
             </h1>
 
-            <p data-i18n="hero_subtitle" class="text-lg sm:text-xl text-muted leading-relaxed max-w-2xl">
+            <p data-i18n="hero_subtitle" class="text-base sm:text-xl text-muted leading-relaxed max-w-2xl">
               Consejería familiar integral, salud y neurodesarrollo en Costa Rica—uniendo medicina clínica, pedagogía infantil y hábitos tecnológicos saludables bajo un mismo equipo de confianza.
             </p>
 
             <!-- Hero CTAs -->
-            <div class="flex flex-col sm:flex-row gap-4 pt-1">
+            <div class="flex flex-col sm:flex-row gap-3.5 sm:gap-4 pt-1">
               <a data-wa-key="wa_hero" href="https://wa.me/50688880000?text=%C2%A1Hola%20Ra%C3%ADces%20%26%20Br%C3%BAjula!%20Quisiera%20agendar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n%20familiar." target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center gap-2.5 bg-sage hover:bg-sage-dark text-white font-semibold px-7 py-4 rounded-full shadow-soft hover:shadow-md transition-all">
                 <i data-lucide="message-circle" class="w-5 h-5"></i>
                 <span data-i18n="hero_cta_wa">Agendar por WhatsApp</span>
               </a>
-              <a href="#packages" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-cream text-ink border border-sage/20 font-semibold px-7 py-4 rounded-full transition-all">
+              <a href="#packages" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-cream text-ink border border-sand font-semibold px-7 py-4 rounded-full transition-all">
                 <span data-i18n="hero_cta_pkg">Ver Paquetes</span>
                 <i data-lucide="arrow-down" class="w-4 h-4 text-terracotta"></i>
               </a>
             </div>
 
             <!-- Trust Bar -->
-            <div class="pt-4 border-t border-sage/10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm text-muted">
+            <div class="pt-4 border-t border-sand grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 text-sm text-muted">
               <div class="flex items-center gap-2.5">
                 <i data-lucide="shield-check" class="w-5 h-5 text-sage shrink-0"></i>
                 <span data-i18n="trust_privacy">Privacidad Ley N.º 8968</span>
@@ -188,19 +198,19 @@
 
           <!-- Right Visual Card Composition -->
           <div class="lg:col-span-5">
-            <div class="relative bg-white rounded-3xl p-6 sm:p-8 shadow-soft border border-sage/10">
-              <div class="flex items-center justify-between pb-5 border-b border-cream">
+            <div class="relative bg-white rounded-3xl p-5 sm:p-8 shadow-soft border border-sand">
+              <div class="flex items-center justify-between pb-4 sm:pb-5 border-b border-sand">
                 <div>
                   <p data-i18n="hero_card_kicker" class="text-xs uppercase tracking-wider font-semibold text-terracotta">Acompañamiento Integral 360°</p>
                   <h2 data-i18n="hero_card_title" class="font-serif text-xl font-semibold text-ink mt-0.5">Una Familia, Tres Miradas</h2>
                 </div>
-                <span class="w-11 h-11 rounded-2xl bg-sage-light text-sage flex items-center justify-center">
+                <span class="w-11 h-11 rounded-2xl bg-sage-light text-sage flex items-center justify-center shrink-0">
                   <i data-lucide="heart-handshake" class="w-6 h-6"></i>
                 </span>
               </div>
 
-              <div class="space-y-4 my-6">
-                <div class="flex items-start gap-4 p-4 rounded-2xl bg-sage-light/55 border border-sage/10">
+              <div class="space-y-3.5 sm:space-y-4 my-5 sm:my-6">
+                <div class="flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 rounded-2xl bg-sage-light/60 border border-sage/20">
                   <div class="w-10 h-10 rounded-xl bg-sage text-white flex items-center justify-center shrink-0">
                     <i data-lucide="stethoscope" class="w-5 h-5"></i>
                   </div>
@@ -210,7 +220,7 @@
                   </div>
                 </div>
 
-                <div class="flex items-start gap-4 p-4 rounded-2xl bg-terracotta-light/70 border border-terracotta/15">
+                <div class="flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 rounded-2xl bg-terracotta-light/75 border border-terracotta/25">
                   <div class="w-10 h-10 rounded-xl bg-terracotta text-white flex items-center justify-center shrink-0">
                     <i data-lucide="blocks" class="w-5 h-5"></i>
                   </div>
@@ -220,7 +230,7 @@
                   </div>
                 </div>
 
-                <div class="flex items-start gap-4 p-4 rounded-2xl bg-slate-light/75 border border-slate-soft/15">
+                <div class="flex items-start gap-3.5 sm:gap-4 p-3.5 sm:p-4 rounded-2xl bg-slate-light/80 border border-slate-soft/25">
                   <div class="w-10 h-10 rounded-xl bg-slate-soft text-white flex items-center justify-center shrink-0">
                     <i data-lucide="laptop-minimal-check" class="w-5 h-5"></i>
                   </div>
@@ -231,11 +241,11 @@
                 </div>
               </div>
 
-              <div class="bg-cream/80 rounded-2xl p-4 flex items-center justify-between gap-4">
+              <div class="bg-cream rounded-2xl p-4 border border-sand flex items-center justify-between gap-3">
                 <p data-i18n-html="bilingual_note" class="text-xs text-muted leading-snug">
                   <strong class="text-ink">Atención Bilingüe:</strong> Consultas disponibles en español e inglés para familias locales y expatriadas.
                 </p>
-                <span class="text-xs font-bold text-sage whitespace-nowrap bg-white px-3 py-1.5 rounded-full border border-sage/15">ES / EN</span>
+                <span class="text-xs font-bold text-sage whitespace-nowrap bg-white px-3 py-1.5 rounded-full border border-sand">ES / EN</span>
               </div>
             </div>
           </div>
@@ -244,9 +254,9 @@
     </section>
 
     <!-- ==================== VALUE PROPOSITION (3 PILLARS) ==================== -->
-    <section id="pillars" class="py-20 bg-white border-y border-sage/10">
+    <section id="pillars" class="py-16 sm:py-20 bg-white border-y border-sand">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-2xl mx-auto text-center mb-14">
+        <div class="max-w-2xl mx-auto text-center mb-12 sm:mb-14">
           <span data-i18n="pillars_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-terracotta">Nuestra Propuesta de Valor</span>
           <h2 data-i18n="pillars_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">Tres disciplinas trabajando juntas por su hijo o hija</h2>
           <p data-i18n="pillars_subtitle" class="text-muted mt-4 leading-relaxed">
@@ -254,10 +264,10 @@
           </p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-3 gap-6 sm:gap-8">
           <!-- Pillar 1 -->
-          <article class="group bg-offwhite rounded-3xl p-8 border border-sage/10 hover:border-sage/30 shadow-card transition-all">
-            <div class="w-14 h-14 rounded-2xl bg-sage-light text-sage flex items-center justify-center mb-6 group-hover:bg-sage group-hover:text-white transition-colors">
+          <article class="group bg-offwhite rounded-3xl p-6 sm:p-8 border border-sand hover:border-sage/50 shadow-card transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-sage-light text-sage border border-sage/15 flex items-center justify-center mb-6 group-hover:bg-sage group-hover:text-white transition-colors">
               <i data-lucide="baby" class="w-7 h-7"></i>
             </div>
             <span data-i18n="p1_role" class="text-xs font-semibold uppercase tracking-wider text-sage">Medicina</span>
@@ -282,8 +292,8 @@
           </article>
 
           <!-- Pillar 2 -->
-          <article class="group bg-offwhite rounded-3xl p-8 border border-terracotta/15 hover:border-terracotta/40 shadow-card transition-all">
-            <div class="w-14 h-14 rounded-2xl bg-terracotta-light text-terracotta flex items-center justify-center mb-6 group-hover:bg-terracotta group-hover:text-white transition-colors">
+          <article class="group bg-offwhite rounded-3xl p-6 sm:p-8 border border-sand hover:border-terracotta/50 shadow-card transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-terracotta-light text-terracotta border border-terracotta/20 flex items-center justify-center mb-6 group-hover:bg-terracotta group-hover:text-white transition-colors">
               <i data-lucide="book-open-check" class="w-7 h-7"></i>
             </div>
             <span data-i18n="p2_role" class="text-xs font-semibold uppercase tracking-wider text-terracotta">Educación Preescolar</span>
@@ -308,8 +318,8 @@
           </article>
 
           <!-- Pillar 3 -->
-          <article class="group bg-offwhite rounded-3xl p-8 border border-slate-soft/15 hover:border-slate-soft/40 shadow-card transition-all">
-            <div class="w-14 h-14 rounded-2xl bg-slate-light text-slate-soft flex items-center justify-center mb-6 group-hover:bg-slate-soft group-hover:text-white transition-colors">
+          <article class="group bg-offwhite rounded-3xl p-6 sm:p-8 border border-sand hover:border-slate-soft/50 shadow-card transition-all">
+            <div class="w-14 h-14 rounded-2xl bg-slate-light text-slate-soft border border-slate-soft/20 flex items-center justify-center mb-6 group-hover:bg-slate-soft group-hover:text-white transition-colors">
               <i data-lucide="shield-alert" class="w-7 h-7"></i>
             </div>
             <span data-i18n="p3_role" class="text-xs font-semibold uppercase tracking-wider text-slate-soft">Ingeniería en Sistemas</span>
@@ -337,9 +347,9 @@
     </section>
 
     <!-- ==================== SERVICE PACKAGES ==================== -->
-    <section id="packages" class="py-20 bg-offwhite">
+    <section id="packages" class="py-16 sm:py-20 bg-offwhite">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="max-w-2xl mx-auto text-center mb-14">
+        <div class="max-w-2xl mx-auto text-center mb-12 sm:mb-14">
           <span data-i18n="pkg_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-sage">Programas a la Medida</span>
           <h2 data-i18n="pkg_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">Paquetes por Etapa</h2>
           <p data-i18n="pkg_subtitle" class="text-muted mt-4 leading-relaxed">
@@ -349,10 +359,10 @@
 
         <div class="grid lg:grid-cols-3 gap-8 items-stretch">
           <!-- Package 1: First 100 Days -->
-          <div class="bg-white rounded-3xl p-8 border border-sage/15 shadow-card flex flex-col justify-between">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-sand shadow-card flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-4">
-                <span data-i18n="pkg1_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-sage-light text-sage">0–6 Meses</span>
+                <span data-i18n="pkg1_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-sage-light text-sage border border-sage/15">0–6 Meses</span>
                 <span data-i18n="pkg1_tag" class="text-xs font-medium text-muted">Enfoque Médico y Vínculo</span>
               </div>
               <h3 data-i18n="pkg1_title" class="font-serif text-2xl font-semibold text-ink">Primeros 100 Días (0-6 meses)</h3>
@@ -360,7 +370,7 @@
                 Respaldo clínico y emocional continuo para futuros padres o recién llegados a casa con su bebé, guiando lactancia, descanso y señales tempranas.
               </p>
 
-              <div class="my-6 py-4 border-y border-cream flex items-baseline gap-2">
+              <div class="my-6 py-4 border-y border-sand flex flex-wrap items-baseline gap-2">
                 <span class="font-serif text-3xl font-bold text-ink">$145</span>
                 <span data-i18n="pkg1_price_sub" class="text-xs text-muted">/ 2 sesiones + seguimiento WhatsApp por 14 días</span>
               </div>
@@ -385,20 +395,20 @@
               </ul>
             </div>
 
-            <a data-wa-key="wa_pkg1" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Me%20interesa%20agendar%20el%20paquete%20Primeros%20100%20D%C3%ADas%20(0-6%20meses)." target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-sage-light hover:bg-sage text-sage-dark hover:text-white font-semibold py-3.5 px-6 rounded-full transition-colors">
+            <a data-wa-key="wa_pkg1" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Me%20interesa%20agendar%20el%20paquete%20Primeros%20100%20D%C3%ADas%20(0-6%20meses)." target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-sage-light hover:bg-sage text-sage-dark hover:text-white border border-sage/20 font-semibold py-3.5 px-6 rounded-full transition-colors">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
               <span data-i18n="pkg1_cta">Agendar Primeros 100 Días</span>
             </a>
           </div>
 
           <!-- Package 2: CR School Route (Featured) -->
-          <div class="relative bg-white rounded-3xl p-8 border-2 border-sage shadow-soft flex flex-col justify-between">
-            <span data-i18n="pkg2_badge" class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-terracotta text-white text-xs font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-sm">
+          <div class="relative mt-4 lg:mt-0 bg-white rounded-3xl p-6 sm:p-8 border-2 border-sage shadow-soft flex flex-col justify-between">
+            <span data-i18n="pkg2_badge" class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-terracotta text-white text-xs font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-sm whitespace-nowrap">
               Más Solicitado
             </span>
             <div>
-              <div class="flex items-center justify-between gap-2 mb-4">
-                <span data-i18n="pkg2_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-terracotta-light text-terracotta-dark">2–6 Años</span>
+              <div class="flex items-center justify-between gap-2 mb-4 pt-1">
+                <span data-i18n="pkg2_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-terracotta-light text-terracotta-dark border border-terracotta/20">2–6 Años</span>
                 <span data-i18n="pkg2_tag" class="text-xs font-medium text-muted">Pedagógico y Clínico</span>
               </div>
               <h3 data-i18n="pkg2_title" class="font-serif text-2xl font-semibold text-ink">Ruta Escolar CR (2-6 años)</h3>
@@ -406,7 +416,7 @@
                 Orientación imparcial para evaluar la madurez del desarrollo y elegir el preescolar o escuela ideal en Costa Rica sin estrés ni desinformación.
               </p>
 
-              <div class="my-6 py-4 border-y border-cream flex items-baseline gap-2">
+              <div class="my-6 py-4 border-y border-sand flex flex-wrap items-baseline gap-2">
                 <span class="font-serif text-3xl font-bold text-ink">$165</span>
                 <span data-i18n="pkg2_price_sub" class="text-xs text-muted">/ Evaluación integral + Mapa de Colegios</span>
               </div>
@@ -438,10 +448,10 @@
           </div>
 
           <!-- Package 3: Tech Compass & Habits -->
-          <div class="bg-white rounded-3xl p-8 border border-slate-soft/20 shadow-card flex flex-col justify-between">
+          <div class="bg-white rounded-3xl p-6 sm:p-8 border border-sand shadow-card flex flex-col justify-between">
             <div>
               <div class="flex items-center justify-between gap-2 mb-4">
-                <span data-i18n="pkg3_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-light text-slate-dark">7–17 Años</span>
+                <span data-i18n="pkg3_age" class="px-3 py-1 rounded-full text-xs font-semibold bg-slate-light text-slate-dark border border-slate-soft/20">7–17 Años</span>
                 <span data-i18n="pkg3_tag" class="text-xs font-medium text-muted">Tecnología y Neurodesarrollo</span>
               </div>
               <h3 data-i18n="pkg3_title" class="font-serif text-2xl font-semibold text-ink">Brújula Digital y Hábitos (7-17 años)</h3>
@@ -449,7 +459,7 @@
                 Plan conjunto de Ingeniería y Medicina para transformar las peleas por pantallas en autonomía digital saludable, mejor descanso y seguridad real.
               </p>
 
-              <div class="my-6 py-4 border-y border-cream flex items-baseline gap-2">
+              <div class="my-6 py-4 border-y border-sand flex flex-wrap items-baseline gap-2">
                 <span class="font-serif text-3xl font-bold text-ink">$155</span>
                 <span data-i18n="pkg3_price_sub" class="text-xs text-muted">/ Diagnóstico familiar + Configuración técnica en vivo</span>
               </div>
@@ -474,7 +484,7 @@
               </ul>
             </div>
 
-            <a data-wa-key="wa_pkg3" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Me%20interesa%20agendar%20el%20paquete%20Br%C3%BAjula%20Digital%20y%20H%C3%A1bitos%20(7-17%20a%C3%B1os)." target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-slate-light hover:bg-slate-soft text-slate-dark hover:text-white font-semibold py-3.5 px-6 rounded-full transition-colors">
+            <a data-wa-key="wa_pkg3" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Me%20interesa%20agendar%20el%20paquete%20Br%C3%BAjula%20Digital%20y%20H%C3%A1bitos%20(7-17%20a%C3%B1os)." target="_blank" rel="noopener noreferrer" class="w-full inline-flex items-center justify-center gap-2 bg-slate-light hover:bg-slate-soft text-slate-dark hover:text-white border border-slate-soft/20 font-semibold py-3.5 px-6 rounded-full transition-colors">
               <i data-lucide="message-circle" class="w-4 h-4"></i>
               <span data-i18n="pkg3_cta">Agendar Brújula Digital</span>
             </a>
@@ -482,14 +492,14 @@
         </div>
 
         <!-- Custom Single Orientation Note -->
-        <div class="mt-10 bg-cream rounded-2xl p-6 sm:px-8 flex flex-col md:flex-row items-center justify-between gap-4 border border-sage/10">
-          <div class="flex items-center gap-4">
-            <div class="w-11 h-11 rounded-xl bg-white text-sage flex items-center justify-center shrink-0 shadow-sm">
+        <div class="mt-10 bg-cream rounded-2xl p-5 sm:px-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-sand">
+          <div class="flex items-start sm:items-center gap-4">
+            <div class="w-11 h-11 rounded-xl bg-white text-sage border border-sand flex items-center justify-center shrink-0 shadow-sm">
               <i data-lucide="sparkles" class="w-5 h-5"></i>
             </div>
             <div>
               <h4 data-i18n="custom_title" class="font-semibold text-ink text-sm sm:text-base">¿No está seguro de cuál etapa se ajusta mejor a su familia hoy?</h4>
-              <p data-i18n="custom_desc" class="text-xs sm:text-sm text-muted">Inicie con una Orientación Exploratoria de 30 minutos o solicite un plan combinado para varios hijos.</p>
+              <p data-i18n="custom_desc" class="text-xs sm:text-sm text-muted mt-0.5">Inicie con una Orientación Exploratoria de 30 minutos o solicite un plan combinado para varios hijos.</p>
             </div>
           </div>
           <button type="button" onclick="openBookingModal()" data-i18n="custom_cta" class="shrink-0 text-sm font-semibold text-sage hover:text-sage-dark underline underline-offset-4">
@@ -500,10 +510,10 @@
     </section>
 
     <!-- ==================== OUR TEAM ==================== -->
-    <section id="team" class="py-20 bg-white border-y border-sage/10">
+    <section id="team" class="py-16 sm:py-20 bg-white border-y border-sand">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Team Intro Banner -->
-        <div class="grid lg:grid-cols-12 gap-8 items-end mb-14">
+        <div class="grid lg:grid-cols-12 gap-8 items-end mb-12 sm:mb-14">
           <div class="lg:col-span-7">
             <span data-i18n="team_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-terracotta">Credenciales y Experiencia Real</span>
             <h2 data-i18n-html="team_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">
@@ -511,88 +521,85 @@
             </h2>
           </div>
           <div class="lg:col-span-5">
-            <div data-i18n-html="team_callout" class="bg-offwhite border border-sage/15 rounded-2xl p-5 text-sm text-muted leading-relaxed">
+            <div data-i18n-html="team_callout" class="bg-offwhite border border-sand rounded-2xl p-5 text-sm text-muted leading-relaxed">
               <strong class="text-ink">Respaldados por la experiencia familiar:</strong> Más allá de nuestros títulos, hemos criado a cuatro hijos—hoy de <strong class="text-ink">7, 12, 16 y 21 años</strong>—acompañándolos en primera persona por colegios privados de Costa Rica, la primera infancia y la adolescencia.
             </div>
           </div>
         </div>
 
         <!-- Team Member Cards -->
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-3 gap-6 sm:gap-8">
           <!-- Member 1: Medical Doctor -->
-          <div class="bg-offwhite rounded-3xl overflow-hidden border border-sage/10 shadow-card flex flex-col">
-            <!-- Photo Placeholder -->
-            <div class="aspect-[4/3] bg-sage-light relative flex flex-col items-center justify-center text-sage/70 border-b border-sage/10 p-6 text-center">
-              <div class="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center mb-3 shadow-sm">
+          <div class="bg-offwhite rounded-3xl overflow-hidden border border-sand shadow-card flex flex-col">
+            <div class="aspect-[4/3] bg-sage-light relative flex flex-col items-center justify-center text-sage/70 border-b border-sand p-6 text-center">
+              <div class="w-16 h-16 rounded-full bg-white/90 border border-sand flex items-center justify-center mb-3 shadow-sm">
                 <i data-lucide="user-round" class="w-8 h-8 text-sage"></i>
               </div>
               <span data-i18n="t1_ph_title" class="text-xs font-semibold uppercase tracking-wider text-sage-dark">Espacio para Fotografía · Medicina</span>
               <span data-i18n="t_ph_sub" class="text-[11px] text-muted mt-1">Recomendado: retrato cálido 800×600px</span>
-              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-sage shadow-sm">
+              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-sage border border-sand shadow-sm">
                 Cod. MED-XXXXX (CR)
               </span>
             </div>
-            <div class="p-7 flex-1 flex flex-col">
+            <div class="p-6 sm:p-7 flex-1 flex flex-col">
               <span data-i18n="t1_role" class="text-xs font-bold uppercase tracking-wider text-sage">Dirección Clínica y Lactancia</span>
               <h3 data-i18n="t1_name" class="font-serif text-xl font-semibold text-ink mt-1">Dr./Dra. [Nombre Completo]</h3>
               <p data-i18n="t1_bio" class="text-sm text-muted mt-3 leading-relaxed flex-1">
                 Médico y Cirujano incorporado al Colegio de Médicos y Cirujanos de Costa Rica, con formación especializada en medicina de lactancia, nutrición infantil y neurodesarrollo temprano.
               </p>
-              <div class="mt-5 pt-4 border-t border-sage/10 flex flex-wrap gap-2">
-                <span data-i18n="t1_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sage/15 text-ink">Pediatría Preventiva</span>
-                <span data-i18n="t1_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sage/15 text-ink">Asesoría en Lactancia</span>
+              <div class="mt-5 pt-4 border-t border-sand flex flex-wrap gap-2">
+                <span data-i18n="t1_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sand text-ink">Pediatría Preventiva</span>
+                <span data-i18n="t1_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sand text-ink">Asesoría en Lactancia</span>
               </div>
             </div>
           </div>
 
           <!-- Member 2: Preschool Teacher -->
-          <div class="bg-offwhite rounded-3xl overflow-hidden border border-terracotta/15 shadow-card flex flex-col">
-            <!-- Photo Placeholder -->
-            <div class="aspect-[4/3] bg-terracotta-light relative flex flex-col items-center justify-center text-terracotta/80 border-b border-terracotta/10 p-6 text-center">
-              <div class="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center mb-3 shadow-sm">
+          <div class="bg-offwhite rounded-3xl overflow-hidden border border-sand shadow-card flex flex-col">
+            <div class="aspect-[4/3] bg-terracotta-light relative flex flex-col items-center justify-center text-terracotta/80 border-b border-sand p-6 text-center">
+              <div class="w-16 h-16 rounded-full bg-white/90 border border-sand flex items-center justify-center mb-3 shadow-sm">
                 <i data-lucide="user-round" class="w-8 h-8 text-terracotta"></i>
               </div>
               <span data-i18n="t2_ph_title" class="text-xs font-semibold uppercase tracking-wider text-terracotta-dark">Espacio para Fotografía · Preescolar</span>
               <span data-i18n="t_ph_sub" class="text-[11px] text-muted mt-1">Recomendado: retrato cálido 800×600px</span>
-              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-terracotta-dark shadow-sm">
+              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-terracotta-dark border border-sand shadow-sm">
                 Lic. Educación Preescolar
               </span>
             </div>
-            <div class="p-7 flex-1 flex flex-col">
+            <div class="p-6 sm:p-7 flex-1 flex flex-col">
               <span data-i18n="t2_role" class="text-xs font-bold uppercase tracking-wider text-terracotta">Primera Infancia y Guía Escolar</span>
               <h3 data-i18n="t2_name" class="font-serif text-xl font-semibold text-ink mt-1">Lic. [Nombre Completo]</h3>
               <p data-i18n="t2_bio" class="text-sm text-muted mt-3 leading-relaxed flex-1">
                 Docente de Educación Preescolar (COLYPRO) especializada en estimulación neurosensorial, regulación emocional y orientación para familias ante el ecosistema de colegios privados en Costa Rica.
               </p>
-              <div class="mt-5 pt-4 border-t border-terracotta/15 flex flex-wrap gap-2">
-                <span data-i18n="t2_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-terracotta/15 text-ink">Hitos Tempranos</span>
-                <span data-i18n="t2_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-terracotta/15 text-ink">Admisión Escolar CR</span>
+              <div class="mt-5 pt-4 border-t border-sand flex flex-wrap gap-2">
+                <span data-i18n="t2_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sand text-ink">Hitos Tempranos</span>
+                <span data-i18n="t2_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sand text-ink">Admisión Escolar CR</span>
               </div>
             </div>
           </div>
 
           <!-- Member 3: Systems Engineer -->
-          <div class="bg-offwhite rounded-3xl overflow-hidden border border-slate-soft/15 shadow-card flex flex-col">
-            <!-- Photo Placeholder -->
-            <div class="aspect-[4/3] bg-slate-light relative flex flex-col items-center justify-center text-slate-soft border-b border-slate-soft/10 p-6 text-center">
-              <div class="w-16 h-16 rounded-full bg-white/80 flex items-center justify-center mb-3 shadow-sm">
+          <div class="bg-offwhite rounded-3xl overflow-hidden border border-sand shadow-card flex flex-col">
+            <div class="aspect-[4/3] bg-slate-light relative flex flex-col items-center justify-center text-slate-soft border-b border-sand p-6 text-center">
+              <div class="w-16 h-16 rounded-full bg-white/90 border border-sand flex items-center justify-center mb-3 shadow-sm">
                 <i data-lucide="user-round" class="w-8 h-8 text-slate-soft"></i>
               </div>
               <span data-i18n="t3_ph_title" class="text-xs font-semibold uppercase tracking-wider text-slate-dark">Espacio para Fotografía · Ingeniería</span>
               <span data-i18n="t_ph_sub" class="text-[11px] text-muted mt-1">Recomendado: retrato cálido 800×600px</span>
-              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-slate-dark shadow-sm">
+              <span class="absolute top-4 left-4 bg-white/95 backdrop-blur px-3 py-1 rounded-full text-[11px] font-bold text-slate-dark border border-sand shadow-sm">
                 Ing. en Sistemas (CPIC)
               </span>
             </div>
-            <div class="p-7 flex-1 flex flex-col">
+            <div class="p-6 sm:p-7 flex-1 flex flex-col">
               <span data-i18n="t3_role" class="text-xs font-bold uppercase tracking-wider text-slate-soft">Hábitos Digitales y Seguridad</span>
               <h3 data-i18n="t3_name" class="font-serif text-xl font-semibold text-ink mt-1">Ing. [Nombre Completo]</h3>
               <p data-i18n="t3_bio" class="text-sm text-muted mt-3 leading-relaxed flex-1">
                 Ingeniero en Sistemas enfocado en ciberseguridad doméstica, ergonomía digital y en traducir los controles parentales técnicos en acuerdos familiares respetuosos para niños y adolescentes.
               </p>
-              <div class="mt-5 pt-4 border-t border-slate-soft/15 flex flex-wrap gap-2">
-                <span data-i18n="t3_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-slate-soft/15 text-ink">Seguridad de Red</span>
-                <span data-i18n="t3_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-slate-soft/15 text-ink">Hábitos Tecnológicos</span>
+              <div class="mt-5 pt-4 border-t border-sand flex flex-wrap gap-2">
+                <span data-i18n="t3_tag1" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sand text-ink">Seguridad de Red</span>
+                <span data-i18n="t3_tag2" class="text-[11px] font-medium bg-white px-2.5 py-1 rounded-full border border-sand text-ink">Hábitos Tecnológicos</span>
               </div>
             </div>
           </div>
@@ -601,70 +608,70 @@
     </section>
 
     <!-- ==================== FAQ (INTERACTIVE ACCORDION) ==================== -->
-    <section id="faq" class="py-20 bg-offwhite">
+    <section id="faq" class="py-16 sm:py-20 bg-offwhite">
       <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center mb-12">
+        <div class="text-center mb-10 sm:mb-12">
           <span data-i18n="faq_kicker" class="text-xs uppercase tracking-[0.16em] font-bold text-sage">Claridad y Confianza</span>
           <h2 data-i18n="faq_title" class="font-serif text-3xl sm:text-4xl font-semibold text-ink mt-2">Preguntas Frecuentes</h2>
-          <p data-i18n="faq_subtitle" class="text-muted mt-3">Todo lo que necesita saber sobre nuestras modalidades, privacidad de datos y alcance preventivo en Costa Rica.</p>
+          <p data-i18n="faq_subtitle" class="text-muted mt-3 text-sm sm:text-base">Todo lo que necesita saber sobre nuestras modalidades, privacidad de datos y alcance preventivo en Costa Rica.</p>
         </div>
 
-        <div class="space-y-4" id="faq-accordion">
-          <!-- FAQ 1: Modalities -->
-          <div class="accordion-item is-open bg-white rounded-2xl border border-sage/15 shadow-sm">
-            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="true">
-              <span data-i18n="faq1_q" class="font-serif font-semibold text-lg text-ink">¿Ofrecen sesiones tanto virtuales como presenciales en la GAM?</span>
-              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+        <div class="space-y-3.5 sm:space-y-4" id="faq-accordion">
+          <!-- FAQ 1: Modalities (Open by default) -->
+          <div class="accordion-item is-open bg-white rounded-2xl border border-sand shadow-sm overflow-hidden">
+            <button type="button" class="accordion-trigger w-full px-5 py-4 sm:px-6 sm:py-5 text-left flex items-center justify-between gap-3.5 focus:outline-none" aria-expanded="true">
+              <span data-i18n="faq1_q" class="font-serif font-semibold text-base sm:text-lg text-ink leading-snug">¿Ofrecen sesiones tanto virtuales como presenciales en la GAM?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage border border-sage/15 flex items-center justify-center shrink-0">
                 <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
               </span>
             </button>
-            <div class="accordion-content">
-              <div data-i18n-html="faq1_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+            <div class="accordion-content" style="max-height: none;">
+              <div data-i18n-html="faq1_a" class="px-5 pb-5 sm:px-6 sm:pb-6 pt-1 text-sm text-muted leading-relaxed border-t border-sand/60">
                 Sí. Brindamos <strong>consultas presenciales a domicilio u oficina</strong> dentro del Gran Área Metropolitana (GAM)—incluyendo Escazú, Santa Ana, San José, Curridabat, Tres Ríos y Heredia—especialmente útiles para valoraciones de lactancia neonatal y configuración práctica del router en casa. Para familias fuera de la GAM, en zonas costeras o que prefieran comodidad remota, el 100% de nuestros paquetes está disponible por videollamada segura.
               </div>
             </div>
           </div>
 
           <!-- FAQ 2: Law 8968 -->
-          <div class="accordion-item bg-white rounded-2xl border border-sage/15 shadow-sm">
-            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
-              <span data-i18n="faq2_q" class="font-serif font-semibold text-lg text-ink">¿Cómo protegen nuestra privacidad bajo la Ley N.º 8968 de Costa Rica?</span>
-              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+          <div class="accordion-item bg-white rounded-2xl border border-sand shadow-sm overflow-hidden">
+            <button type="button" class="accordion-trigger w-full px-5 py-4 sm:px-6 sm:py-5 text-left flex items-center justify-between gap-3.5 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faq2_q" class="font-serif font-semibold text-base sm:text-lg text-ink leading-snug">¿Cómo protegen nuestra privacidad bajo la Ley N.º 8968 de Costa Rica?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage border border-sage/15 flex items-center justify-center shrink-0">
                 <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
               </span>
             </button>
             <div class="accordion-content">
-              <div data-i18n-html="faq2_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+              <div data-i18n-html="faq2_a" class="px-5 pb-5 sm:px-6 sm:pb-6 pt-1 text-sm text-muted leading-relaxed border-t border-sand/60">
                 La confianza de su familia es sagrada. Todas las notas clínicas, observaciones del desarrollo y diagnósticos digitales del hogar se manejan en estricto cumplimiento de la <strong>Ley N.º 8968 de Costa Rica</strong> (<em>Ley de Protección de la Persona frente al Tratamiento de sus Datos Personales</em>) y el secreto profesional médico. Solicitamos consentimiento informado explícito, resguardamos la información en entornos cifrados y jamás compartimos datos con colegios ni terceros.
               </div>
             </div>
           </div>
 
           <!-- FAQ 3: Preventive Scope -->
-          <div class="accordion-item bg-white rounded-2xl border border-sage/15 shadow-sm">
-            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
-              <span data-i18n="faq3_q" class="font-serif font-semibold text-lg text-ink">¿Cuál es el alcance preventivo de la asesoría médica y de neurodesarrollo?</span>
-              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+          <div class="accordion-item bg-white rounded-2xl border border-sand shadow-sm overflow-hidden">
+            <button type="button" class="accordion-trigger w-full px-5 py-4 sm:px-6 sm:py-5 text-left flex items-center justify-between gap-3.5 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faq3_q" class="font-serif font-semibold text-base sm:text-lg text-ink leading-snug">¿Cuál es el alcance preventivo de la asesoría médica y de neurodesarrollo?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage border border-sage/15 flex items-center justify-center shrink-0">
                 <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
               </span>
             </button>
             <div class="accordion-content">
-              <div data-i18n-html="faq3_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+              <div data-i18n-html="faq3_a" class="px-5 pb-5 sm:px-6 sm:pb-6 pt-1 text-sm text-muted leading-relaxed border-t border-sand/60">
                 Nuestro servicio se enfoca en la <strong>salud preventiva, tamizaje temprano, consejería en lactancia, orientación del desarrollo y formación de hábitos familiares</strong>. Complementa—y no sustituye—al pediatra de cabecera, los servicios de urgencias ni terapias clínicas especializadas (como neuropsicología o terapia del lenguaje). Cuando identificamos una señal que requiere atención urgente o diagnóstico especializado, le orientamos de inmediato hacia el especialista u hospital indicado en Costa Rica.
               </div>
             </div>
           </div>
 
           <!-- FAQ 4: Independent School Advice -->
-          <div class="accordion-item bg-white rounded-2xl border border-sage/15 shadow-sm">
-            <button type="button" class="accordion-trigger w-full px-6 py-5 text-left flex items-center justify-between gap-4 focus:outline-none" aria-expanded="false">
-              <span data-i18n="faq4_q" class="font-serif font-semibold text-lg text-ink">¿Tienen convenio o reciben comisiones de algún colegio privado?</span>
-              <span class="w-8 h-8 rounded-full bg-sage-light text-sage flex items-center justify-center shrink-0">
+          <div class="accordion-item bg-white rounded-2xl border border-sand shadow-sm overflow-hidden">
+            <button type="button" class="accordion-trigger w-full px-5 py-4 sm:px-6 sm:py-5 text-left flex items-center justify-between gap-3.5 focus:outline-none" aria-expanded="false">
+              <span data-i18n="faq4_q" class="font-serif font-semibold text-base sm:text-lg text-ink leading-snug">¿Tienen convenio o reciben comisiones de algún colegio privado?</span>
+              <span class="w-8 h-8 rounded-full bg-sage-light text-sage border border-sage/15 flex items-center justify-center shrink-0">
                 <i data-lucide="chevron-down" class="accordion-icon w-4 h-4"></i>
               </span>
             </button>
             <div class="accordion-content">
-              <div data-i18n-html="faq4_a" class="accordion-inner px-6 pb-6 text-sm text-muted leading-relaxed">
+              <div data-i18n-html="faq4_a" class="px-5 pb-5 sm:px-6 sm:pb-6 pt-1 text-sm text-muted leading-relaxed border-t border-sand/60">
                 No. Somos <strong>100% independientes</strong> y no aceptamos comisiones ni pagos por referidos de ninguna institución educativa. Nuestras recomendaciones responden únicamente al perfil de desarrollo de su hijo, la logística familiar y nuestro conocimiento real del entorno escolar costarricense.
               </div>
             </div>
@@ -674,18 +681,18 @@
     </section>
 
     <!-- ==================== FINAL CALLOUT CTA ==================== -->
-    <section class="py-16 bg-sage text-white">
+    <section class="py-16 bg-sage text-white border-t border-sage-dark">
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 data-i18n="cta_banner_title" class="font-serif text-3xl sm:text-4xl font-semibold">¿Listos para sentirse acompañados en cada etapa?</h2>
         <p data-i18n="cta_banner_sub" class="text-white/85 mt-3 max-w-2xl mx-auto text-base sm:text-lg">
           Escríbanos para coordinar su sesión de orientación en español o inglés—de forma virtual o presencial en la GAM.
         </p>
         <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a data-wa-key="wa_banner" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Quisiera%20coordinar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n%20familiar." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2.5 bg-white text-sage-dark hover:bg-cream font-semibold px-8 py-4 rounded-full shadow-md transition-all">
+          <a data-wa-key="wa_banner" href="https://wa.me/50688880000?text=%C2%A1Hola!%20Quisiera%20coordinar%20una%20sesi%C3%B3n%20de%20orientaci%C3%B3n%20familiar." target="_blank" rel="noopener noreferrer" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-white text-sage-dark hover:bg-cream font-semibold px-8 py-4 rounded-full shadow-md transition-all">
             <i data-lucide="message-circle" class="w-5 h-5 text-sage"></i>
             <span data-i18n="cta_banner_wa">Escribir por WhatsApp</span>
           </a>
-          <button type="button" onclick="openBookingModal()" class="inline-flex items-center gap-2 border border-white/40 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full transition-all">
+          <button type="button" onclick="openBookingModal()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-white/40 hover:bg-white/10 text-white font-semibold px-8 py-4 rounded-full transition-all">
             <i data-lucide="calendar-heart" class="w-5 h-5"></i>
             <span data-i18n="cta_banner_modal">Elegir Paquete y Agendar</span>
           </button>
@@ -695,9 +702,9 @@
   </main>
 
   <!-- ==================== FOOTER ==================== -->
-  <footer class="bg-ink text-white/80 pt-16 pb-10">
+  <footer class="bg-ink text-white/80 pt-14 sm:pt-16 pb-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid md:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+      <div class="grid md:grid-cols-12 gap-10 pb-12 border-b border-white/15">
         <!-- Brand Info -->
         <div class="md:col-span-5 space-y-4">
           <div class="flex items-center gap-2.5">
@@ -742,7 +749,7 @@
         <p data-i18n-html="footer_legal">
           <strong class="text-white/80">Aviso Legal y de Confidencialidad:</strong> Todas las sesiones y registros familiares se manejan bajo estricto secreto profesional y conforme a la <strong>Ley N.º 8968 de Costa Rica</strong> (Protección de Datos Personales). Nuestro acompañamiento clínico, pedagógico y tecnológico es estrictamente preventivo, educativo y de asesoría; no sustituye la atención médica de emergencia, servicios hospitalarios ni tratamientos pediátricos o psiquiátricos continuos. En caso de emergencia médica en Costa Rica, comuníquese de inmediato al <strong>9-1-1</strong> o acuda al centro de emergencias más cercano.
         </p>
-        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2">
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-2 pt-2 text-center sm:text-left">
           <span>&copy; <span id="year"></span> Raíces &amp; Brújula Familia CR. <span data-i18n="footer_rights">Todos los derechos reservados.</span></span>
           <span data-i18n="footer_made">Hecho con dedicación para familias en Costa Rica.</span>
         </div>
@@ -751,15 +758,15 @@
   </footer>
 
   <!-- ==================== FLOATING WHATSAPP BUTTON ==================== -->
-  <a data-wa-key="wa_float" href="https://wa.me/50688880000?text=%C2%A1Hola%20Ra%C3%ADces%20%26%20Br%C3%BAjula!%20Quisiera%20agendar%20una%20orientaci%C3%B3n." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp" class="fixed bottom-6 right-6 z-40 group flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white pl-4 pr-5 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+  <a data-wa-key="wa_float" href="https://wa.me/50688880000?text=%C2%A1Hola%20Ra%C3%ADces%20%26%20Br%C3%BAjula!%20Quisiera%20agendar%20una%20orientaci%C3%B3n." target="_blank" rel="noopener noreferrer" aria-label="Escribir por WhatsApp" class="fixed bottom-5 right-5 sm:bottom-6 sm:right-6 z-40 group flex items-center gap-2.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white p-3.5 sm:pl-4 sm:pr-5 sm:py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
     <i data-lucide="message-circle" class="w-6 h-6 fill-current"></i>
     <span data-i18n="wa_float_label" class="font-semibold text-sm hidden sm:inline">WhatsApp Directo</span>
   </a>
 
   <!-- ==================== BOOKING ORIENTATION MODAL ==================== -->
   <div id="booking-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-ink/50 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-    <div class="bg-white rounded-3xl max-w-md w-full p-7 shadow-2xl border border-sage/15 relative">
-      <button type="button" onclick="closeBookingModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-cream hover:bg-sage-light text-ink flex items-center justify-center transition-colors" aria-label="Cerrar ventana">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-sand relative max-h-[90vh] overflow-y-auto">
+      <button type="button" onclick="closeBookingModal()" class="absolute top-5 right-5 w-8 h-8 rounded-full bg-cream border border-sand hover:bg-sage-light text-ink flex items-center justify-center transition-colors" aria-label="Cerrar ventana">
         <i data-lucide="x" class="w-4 h-4"></i>
       </button>
 
@@ -770,33 +777,42 @@
       <form id="booking-form" class="space-y-4">
         <div>
           <label for="parent-name" data-i18n="modal_name_label" class="block text-xs font-semibold text-ink mb-1">Su Nombre</label>
-          <input id="parent-name" type="text" required placeholder="Ej., Sofía Vargas" class="w-full rounded-xl border border-sage/20 px-4 py-2.5 text-sm focus:outline-none focus:border-sage" />
+          <input id="parent-name" type="text" required placeholder="Ej., Sofía Vargas" class="w-full appearance-none rounded-xl border border-sand bg-white px-4 py-2.5 text-sm text-ink focus:outline-none focus:border-sage" />
         </div>
 
         <div>
           <label for="package-select" data-i18n="modal_pkg_label" class="block text-xs font-semibold text-ink mb-1">Etapa / Paquete</label>
-          <select id="package-select" class="w-full rounded-xl border border-sage/20 px-4 py-2.5 text-sm bg-white focus:outline-none focus:border-sage">
-            <option value="pkg1" data-i18n="opt_pkg1">Primeros 100 Días (0–6 meses)</option>
-            <option value="pkg2" data-i18n="opt_pkg2">Ruta Escolar CR (2–6 años)</option>
-            <option value="pkg3" data-i18n="opt_pkg3">Brújula Digital y Hábitos (7–17 años)</option>
-            <option value="discovery" data-i18n="opt_disc">Orientación Exploratoria (30 min)</option>
-          </select>
+          <div class="relative">
+            <select id="package-select" class="w-full appearance-none rounded-xl border border-sand bg-white px-4 py-2.5 pr-9 text-sm text-ink focus:outline-none focus:border-sage">
+              <option value="pkg1" data-i18n="opt_pkg1">Primeros 100 Días (0–6 meses)</option>
+              <option value="pkg2" data-i18n="opt_pkg2">Ruta Escolar CR (2–6 años)</option>
+              <option value="pkg3" data-i18n="opt_pkg3">Brújula Digital y Hábitos (7–17 años)</option>
+              <option value="discovery" data-i18n="opt_disc">Orientación Exploratoria (30 min)</option>
+            </select>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-muted absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+          </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label for="modality-select" data-i18n="modal_mod_label" class="block text-xs font-semibold text-ink mb-1">Modalidad</label>
-            <select id="modality-select" class="w-full rounded-xl border border-sage/20 px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-sage">
-              <option value="virtual" data-i18n="opt_virtual">Virtual (Videollamada)</option>
-              <option value="gam" data-i18n="opt_gam">Presencial (GAM)</option>
-            </select>
+            <div class="relative">
+              <select id="modality-select" class="w-full appearance-none rounded-xl border border-sand bg-white px-3 py-2.5 pr-8 text-sm text-ink focus:outline-none focus:border-sage">
+                <option value="virtual" data-i18n="opt_virtual">Virtual (Videollamada)</option>
+                <option value="gam" data-i18n="opt_gam">Presencial (GAM)</option>
+              </select>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-muted absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+            </div>
           </div>
           <div>
             <label for="language-select" data-i18n="modal_lang_label" class="block text-xs font-semibold text-ink mb-1">Idioma</label>
-            <select id="language-select" class="w-full rounded-xl border border-sage/20 px-3 py-2.5 text-sm bg-white focus:outline-none focus:border-sage">
-              <option value="Español">Español</option>
-              <option value="English">English</option>
-            </select>
+            <div class="relative">
+              <select id="language-select" class="w-full appearance-none rounded-xl border border-sand bg-white px-3 py-2.5 pr-8 text-sm text-ink focus:outline-none focus:border-sage">
+                <option value="Español">Español</option>
+                <option value="English">English</option>
+              </select>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-muted absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+            </div>
           </div>
         </div>
 
@@ -1175,31 +1191,25 @@
       currentLang = lang;
       const dict = translations[lang];
 
-      // Update html lang attribute & document title
       document.documentElement.lang = lang;
       document.title = dict.meta_title;
 
-      // Update plain text elements
       document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         if (dict[key] !== undefined) el.textContent = dict[key];
       });
 
-      // Update HTML-rich elements
       document.querySelectorAll('[data-i18n-html]').forEach(el => {
         const key = el.getAttribute('data-i18n-html');
         if (dict[key] !== undefined) el.innerHTML = dict[key];
       });
 
-      // Update placeholder
       const nameInput = document.getElementById('parent-name');
       if (nameInput) nameInput.placeholder = dict.modal_name_ph;
 
-      // Sync preferred language dropdown inside modal
       const langSelect = document.getElementById('language-select');
       if (langSelect) langSelect.value = lang === 'es' ? 'Español' : 'English';
 
-      // Update WhatsApp links dynamically
       document.querySelectorAll('[data-wa-key]').forEach(link => {
         const key = link.getAttribute('data-wa-key');
         if (dict[key]) {
@@ -1207,15 +1217,14 @@
         }
       });
 
-      // Update Toggle Button Active Styles
       const btnEs = document.getElementById('btn-lang-es');
       const btnEn = document.getElementById('btn-lang-en');
       if (lang === 'es') {
-        btnEs.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-sage text-white shadow-sm';
-        btnEn.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all text-muted hover:text-ink';
+        btnEs.className = 'px-2 sm:px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all bg-sage text-white shadow-sm';
+        btnEn.className = 'px-2 sm:px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all text-muted hover:text-ink';
       } else {
-        btnEn.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all bg-sage text-white shadow-sm';
-        btnEs.className = 'px-2.5 py-1 rounded-full text-xs font-bold transition-all text-muted hover:text-ink';
+        btnEn.className = 'px-2 sm:px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all bg-sage text-white shadow-sm';
+        btnEs.className = 'px-2 sm:px-2.5 py-1 rounded-full text-[11px] sm:text-xs font-bold transition-all text-muted hover:text-ink';
       }
 
       try {
@@ -1255,19 +1264,52 @@
       link.addEventListener('click', () => toggleMobileMenu(false));
     });
 
-    // Interactive FAQ Accordion
+    // Interactive FAQ Accordion (iOS Safari Safe)
     const accordionItems = document.querySelectorAll('.accordion-item');
+
+    function closeAccordionItem(item) {
+      const content = item.querySelector('.accordion-content');
+      const trigger = item.querySelector('.accordion-trigger');
+      if (!item.classList.contains('is-open')) return;
+
+      // Snapshot pixel height before animating down to 0px
+      if (content.style.maxHeight === 'none' || !content.style.maxHeight) {
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.offsetHeight; // Force reflow for iOS Safari
+      }
+      item.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+      content.style.maxHeight = '0px';
+    }
+
+    function openAccordionItem(item) {
+      const content = item.querySelector('.accordion-content');
+      const trigger = item.querySelector('.accordion-trigger');
+      item.classList.add('is-open');
+      trigger.setAttribute('aria-expanded', 'true');
+      content.style.maxHeight = content.scrollHeight + 'px';
+    }
+
     accordionItems.forEach(item => {
       const trigger = item.querySelector('.accordion-trigger');
+      const content = item.querySelector('.accordion-content');
+
+      // Release max-height once open transition finishes so rotation/lang-switch never clips
+      content.addEventListener('transitionend', (e) => {
+        if (e.propertyName === 'max-height' && item.classList.contains('is-open')) {
+          content.style.maxHeight = 'none';
+        }
+      });
+
       trigger.addEventListener('click', () => {
         const isOpen = item.classList.contains('is-open');
         accordionItems.forEach(other => {
-          other.classList.remove('is-open');
-          other.querySelector('.accordion-trigger').setAttribute('aria-expanded', 'false');
+          if (other !== item) closeAccordionItem(other);
         });
-        if (!isOpen) {
-          item.classList.add('is-open');
-          trigger.setAttribute('aria-expanded', 'true');
+        if (isOpen) {
+          closeAccordionItem(item);
+        } else {
+          openAccordionItem(item);
         }
       });
     });
